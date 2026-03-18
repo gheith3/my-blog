@@ -1,0 +1,40 @@
+services:
+
+  # MariaDB Database
+  database:
+    image: postgres:16
+    container_name: blog-db
+    environment:
+      POSTGRES_DB: blog
+      POSTGRES_USER: blog_user
+      POSTGRES_PASSWORD: blog_secret
+    ports:
+      - "5882:5432"
+    volumes:
+      - blog_postgres_data:/var/lib/postgresql/data
+    networks:
+      - blog-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: blog-redis
+    ports:
+      - "5883:6379"
+    volumes:
+      - blog_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - blog-network
+
+volumes:
+  blog_postgres_data:
+  blog_redis_data:
+
+networks:
+  blog-network:
+    driver: bridge

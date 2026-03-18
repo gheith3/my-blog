@@ -1,0 +1,128 @@
+# Laravel Docker Template - Production Environment
+# For use with Docker Portainer
+# Set PROJECT_NAME, GITHUB_USERNAME, and IMAGE_NAME in environment variables
+
+services:
+
+  # Laravel Backend
+  backend:
+    image: ghcr.io/gheith3/blog:latest
+    container_name: ${PROJECT_NAME:-laravel}-backend
+    ports:
+      - "${APP_PORT:-8000}:80"
+    environment:
+      # ============================================
+      # Application (REQUIRED)
+      # ============================================
+      - APP_NAME=${APP_NAME:-Laravel}
+      - APP_ENV=production
+      - APP_DEBUG=false
+      - APP_URL=${APP_URL:-https://example.com}
+      - ASSET_URL=${APP_URL:-https://example.com}
+      - APP_KEY=${APP_KEY:?APP_KEY is required}
+      
+      # ============================================
+      # Logging
+      # ============================================
+      - LOG_CHANNEL=${LOG_CHANNEL:-stack}
+      - LOG_STACK=${LOG_STACK:-single}
+      - LOG_LEVEL=${LOG_LEVEL:-warning}
+      
+      # ============================================
+      # Database (PostgreSQL)
+      # ============================================
+      - DB_CONNECTION=pgsql
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_DATABASE=${DB_DATABASE:-laravel}
+      - DB_USERNAME=${DB_USERNAME:-laravel_user}
+      - DB_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required}
+      
+      # ============================================
+      # Redis
+      # ============================================
+      - REDIS_CLIENT=phpredis
+      - REDIS_HOST=redis
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - REDIS_PORT=6379
+      
+      # ============================================
+      # Cache, Session, Queue
+      # ============================================
+      - CACHE_STORE=redis
+      - SESSION_DRIVER=redis
+      - SESSION_LIFETIME=120
+      - SESSION_ENCRYPT=false
+      - SESSION_PATH=/
+      - SESSION_DOMAIN=${SESSION_DOMAIN:-}
+      - QUEUE_CONNECTION=redis
+      - QUEUE_FAILED_DRIVER=database-uuids
+
+      # ============================================
+      # Deployment
+      # ============================================
+      - RUN_MIGRATIONS=${RUN_MIGRATIONS:-false}
+    volumes:
+      - blog-storage:/var/www/html/storage
+      - ${DATA_PATH:-./data}/${PROJECT_NAME:-laravel}/logs:/var/log
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      barcode-extractor:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - blog-network
+
+  # PostgreSQL Database
+  database:
+    image: postgres:16
+    container_name: ${PROJECT_NAME:-laravel}-database
+    environment:
+      - POSTGRES_DB=${DB_DATABASE:-laravel}
+      - POSTGRES_USER=${DB_USERNAME:-laravel_user}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required}
+    volumes:
+      - blog-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${DB_USERNAME:-laravel_user} -d ${DB_DATABASE:-laravel}",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - blog-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: ${PROJECT_NAME:-laravel}-redis
+    command: redis-server --appendonly yes ${REDIS_PASSWORD:+--requirepass $REDIS_PASSWORD}
+    volumes:
+      - ${DATA_PATH:-./data}/${PROJECT_NAME:-laravel}/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - blog-network
+
+networks:
+  blog-network:
+    driver: bridge
+
+volumes:
+  blog-storage:
+    driver: local
+  blog-postgres:
+    driver: local
