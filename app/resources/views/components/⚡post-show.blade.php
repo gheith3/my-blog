@@ -71,7 +71,7 @@ class extends Component
         <div class="max-w-3xl mx-auto px-4 sm:px-6">
             {{-- Back Link --}}
             <a href="{{ route('home') }}#posts" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 mb-8">
-                ← Back to posts
+                {{ app()->getLocale() === 'ar' ? '→' : '←' }} {{ __('app.posts.back_to_posts') }}
             </a>
 
             {{-- Header --}}
@@ -79,7 +79,7 @@ class extends Component
                 {{-- Meta --}}
                 <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-500 mb-4">
                     <a href="{{ $this->getCategoryUrl() }}" class="hover:underline">
-                        {{ $post->category?->name ?? 'Uncategorized' }}
+                        {{ $post->category?->getLocalizedName() ?? __('app.posts.uncategorized') }}
                     </a>
                     <span>·</span>
                     <span>{{ $post->published_at?->format('F j, Y') ?? $post->created_at->format('F j, Y') }}</span>
@@ -97,7 +97,7 @@ class extends Component
                     <div class="flex flex-wrap gap-3">
                         @foreach($post->tags as $tag)
                             <a href="{{ $this->getTagUrl($tag->id) }}" class="text-sm text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:underline">
-                                #{{ $tag->name }}
+                                #{{ $tag->getLocalizedName() }}
                             </a>
                         @endforeach
                     </div>
@@ -113,14 +113,14 @@ class extends Component
             <footer class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
                 <div class="flex items-center justify-between">
                     <p class="text-sm text-gray-500">
-                        Last updated {{ $post->updated_at->format('F j, Y') }}
+                        {{ __('app.posts.last_updated') }} {{ $post->updated_at->format('F j, Y') }}
                     </p>
                     
                     <div class="flex items-center gap-4">
                         <a href="https://twitter.com/intent/tweet?text={{ urlencode($post->title) }}&url={{ urlencode(route('posts.show', $post->slug)) }}" 
                            target="_blank" 
                            class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-                            Share on Twitter
+                            {{ __('app.posts.share_twitter') }}
                         </a>
                     </div>
                 </div>
@@ -132,12 +132,12 @@ class extends Component
     @if($relatedPosts->count() > 0)
         <section class="py-16 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
             <div class="max-w-3xl mx-auto px-4 sm:px-6">
-                <h2 class="text-xl font-semibold mb-6">Related Posts</h2>
+                <h2 class="text-xl font-semibold mb-6">{{ __('app.posts.related_posts') }}</h2>
                 <div class="grid gap-4">
                     @foreach($relatedPosts as $relatedPost)
                         <a href="{{ route('posts.show', $relatedPost->slug) }}" class="block p-4 border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-gray-400 dark:hover:border-gray-600">
                             <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-500 mb-2">
-                                <span>{{ $relatedPost->category?->name ?? 'Uncategorized' }}</span>
+                                <span>{{ $relatedPost->category?->getLocalizedName() ?? __('app.posts.uncategorized') }}</span>
                                 <span>·</span>
                                 <span>{{ $relatedPost->published_at?->format('M j, Y') ?? $relatedPost->created_at->format('M j, Y') }}</span>
                             </div>

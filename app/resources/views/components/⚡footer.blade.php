@@ -11,7 +11,7 @@ new class extends Component
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p class="text-sm text-gray-500">
-                © {{ date('Y') }} Blog
+                © {{ date('Y') }} {{ __('app.name') }}. {{ __('app.footer.copyright') }}
             </p>
             <div class="flex items-center gap-4">
                 <a href="#" class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">Twitter</a>

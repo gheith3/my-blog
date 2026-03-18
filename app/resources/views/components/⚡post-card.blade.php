@@ -13,7 +13,7 @@ new class extends Component
         {{-- Meta --}}
         <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-500 mb-3">
             <a href="{{ route('home', ['category' => $post->category?->id]) }}#posts" class="hover:underline">
-                {{ $post->category?->name ?? 'Uncategorized' }}
+                {{ $post->category?->getLocalizedName() ?? __('app.posts.uncategorized') }}
             </a>
             <span>·</span>
             <span>{{ $post->published_at?->format('M j, Y') ?? $post->created_at->format('M j, Y') }}</span>
@@ -36,7 +36,7 @@ new class extends Component
             <div class="flex flex-wrap gap-2 mb-4">
                 @foreach($post->tags as $tag)
                     <a href="{{ route('home', ['tag' => $tag->id]) }}#posts" class="text-sm text-gray-500 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 hover:underline">
-                        #{{ $tag->name }}
+                        #{{ $tag->getLocalizedName() }}
                     </a>
                 @endforeach
             </div>
@@ -44,7 +44,7 @@ new class extends Component
 
         {{-- Read More --}}
         <a href="{{ route('posts.show', $post->slug) }}" class="text-sm font-medium text-gray-900 dark:text-gray-100 hover:underline">
-            Read more →
+            {{ __('app.posts.read_more') }}
         </a>
     </div>
 </article>

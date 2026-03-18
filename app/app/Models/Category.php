@@ -15,8 +15,10 @@ class Category extends Model
 
     protected $fillable = [
         'name',
+        'ar_name',
         'slug',
         'description',
+        'ar_description',
     ];
 
     /**
@@ -26,6 +28,7 @@ class Category extends Model
     {
         return [
             'description' => 'string',
+            'ar_description' => 'string',
         ];
     }
 
@@ -33,13 +36,41 @@ class Category extends Model
     {
         parent::boot();
 
-        static::creating(function ($tag) {
-            $tag->slug = str($tag->name)->slug();
+        static::creating(function ($category) {
+            if (empty($category->slug)) {
+                $category->slug = str($category->name)->slug();
+            }
         });
 
-        static::updating(function ($tag) {
-            $tag->slug = str($tag->name)->slug();
+        static::updating(function ($category) {
+            if (empty($category->slug)) {
+                $category->slug = str($category->name)->slug();
+            }
         });
+    }
+
+    /**
+     * Get localized name based on current locale
+     */
+    public function getLocalizedName(): string
+    {
+        if (app()->getLocale() === 'ar' && ! empty($this->ar_name)) {
+            return $this->ar_name;
+        }
+
+        return $this->name;
+    }
+
+    /**
+     * Get localized description based on current locale
+     */
+    public function getLocalizedDescription(): ?string
+    {
+        if (app()->getLocale() === 'ar' && ! empty($this->ar_description)) {
+            return $this->ar_description;
+        }
+
+        return $this->description;
     }
 
     /**

@@ -22,8 +22,10 @@ class CategoryFactory extends Factory
 
         return [
             'name' => $name,
+            'ar_name' => null,
             'slug' => Str::slug($name),
             'description' => fake()->optional()->paragraph(),
+            'ar_description' => null,
         ];
     }
 

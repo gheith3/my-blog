@@ -19,19 +19,16 @@ new class extends Component
 
             {{-- Content --}}
             <div>
-                <h2 class="text-2xl font-semibold mb-4">About Me</h2>
+                <h2 class="text-2xl font-semibold mb-4">{{ __('app.about.title') }}</h2>
                 <div class="space-y-4 text-gray-600 dark:text-gray-400 leading-relaxed">
-                    <p>
-                        Welcome to my blog. I'm a writer who loves to share thoughts on life, technology, and everything in between.
-                    </p>
-                    <p>
-                        This space is where I document my journey — from short stories to quiet moments of reflection.
-                    </p>
+                    @foreach(__('app.about.description') as $paragraph)
+                        <p>{{ $paragraph }}</p>
+                    @endforeach
                 </div>
 
                 {{-- Tags --}}
                 <div class="mt-6 flex flex-wrap gap-2">
-                    @foreach(['Writing', 'Stories', 'Tech', 'Life'] as $tag)
+                    @foreach(__('app.about.tags') as $tag)
                         <span class="px-2 py-1 text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-800">
                             {{ $tag }}
                         </span>

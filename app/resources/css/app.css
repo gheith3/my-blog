@@ -6,7 +6,7 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Inter', 'Noto Sans Arabic', ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer utilities {
@@ -24,6 +24,21 @@ html {
 
 [x-cloak] {
     display: none !important;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+    text-align: right;
+}
+
+[dir="rtl"] .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-x-reverse: 1;
+}
+
+[dir="rtl"] .prose ul,
+[dir="rtl"] .prose ol {
+    padding-left: 0;
+    padding-right: 1.5em;
 }
 
 /* Simple prose styles for post content */
@@ -53,6 +68,10 @@ html {
 
 .prose blockquote {
     @apply border-l-4 border-gray-200 dark:border-gray-700 pl-4 italic my-6;
+}
+
+[dir="rtl"] .prose blockquote {
+    @apply border-l-0 border-r-4 pr-4 pl-0;
 }
 
 .prose code {

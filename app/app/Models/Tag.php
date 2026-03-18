@@ -15,21 +15,37 @@ class Tag extends Model
 
     protected $fillable = [
         'name',
+        'ar_name',
         'slug',
     ];
-
 
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($tag) {
-            $tag->slug = str($tag->name)->slug();
+            if (empty($tag->slug)) {
+                $tag->slug = str($tag->name)->slug();
+            }
         });
 
         static::updating(function ($tag) {
-            $tag->slug = str($tag->name)->slug();
+            if (empty($tag->slug)) {
+                $tag->slug = str($tag->name)->slug();
+            }
         });
+    }
+
+    /**
+     * Get localized name based on current locale
+     */
+    public function getLocalizedName(): string
+    {
+        if (app()->getLocale() === 'ar' && ! empty($this->ar_name)) {
+            return $this->ar_name;
+        }
+
+        return $this->name;
     }
 
     /**

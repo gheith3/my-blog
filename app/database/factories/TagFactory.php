@@ -22,6 +22,7 @@ class TagFactory extends Factory
 
         return [
             'name' => $name,
+            'ar_name' => null,
             'slug' => Str::slug($name),
         ];
     }

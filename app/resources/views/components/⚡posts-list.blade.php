@@ -20,7 +20,6 @@ new class extends Component
 
     public function mount(): void
     {
-        // Handle single value from URL query string
         if (is_string($this->selectedCategories)) {
             $this->selectedCategories = [$this->selectedCategories];
         }
@@ -89,9 +88,9 @@ new class extends Component
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
         {{-- Header --}}
         <div class="mb-10">
-            <h2 class="text-2xl font-semibold mb-2">Latest Posts</h2>
+            <h2 class="text-2xl font-semibold mb-2">{{ __('app.posts.title') }}</h2>
             <p class="text-gray-600 dark:text-gray-400">
-                Thoughts and stories from my journey.
+                {{ __('app.posts.description') }}
             </p>
         </div>
 
@@ -100,12 +99,12 @@ new class extends Component
             <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2 text-sm">
-                        <span class="text-gray-500">Filtered by:</span>
+                        <span class="text-gray-500">{{ __('app.posts.filtered_by') }}</span>
                         @foreach($selectedCategories as $catId)
                             @php($cat = $categories->firstWhere('id', $catId))
                             @if($cat)
                                 <span class="px-2 py-1 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
-                                    {{ $cat->name }}
+                                    {{ $cat->getLocalizedName() }}
                                 </span>
                             @endif
                         @endforeach
@@ -113,7 +112,7 @@ new class extends Component
                             @php($tag = \App\Models\Tag::find($tagId))
                             @if($tag)
                                 <span class="px-2 py-1 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
-                                    #{{ $tag->name }}
+                                    #{{ $tag->getLocalizedName() }}
                                 </span>
                             @endif
                         @endforeach
@@ -122,7 +121,7 @@ new class extends Component
                         wire:click="$set('selectedCategories', []); $set('selectedTags', [])"
                         class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 underline"
                     >
-                        Clear all
+                        {{ __('app.posts.clear_filters') }}
                     </button>
                 </div>
             </div>
@@ -134,7 +133,7 @@ new class extends Component
             <input 
                 wire:model.live.debounce.300ms="search"
                 type="text" 
-                placeholder="Search posts..."
+                placeholder="{{ __('app.posts.search_placeholder') }}"
                 class="w-full px-4 py-2 border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-gray-400 dark:focus:border-gray-600"
             >
 
@@ -145,7 +144,7 @@ new class extends Component
                         wire:click="toggleCategory({{ $category->id }})"
                         class="px-3 py-1 text-sm border {{ in_array($category->id, $selectedCategories) ? 'bg-gray-900 dark:bg-white text-white dark:text-gray-900 border-gray-900 dark:border-white' : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-800' }}"
                     >
-                        {{ $category->name }}
+                        {{ $category->getLocalizedName() }}
                     </button>
                 @endforeach
             </div>
@@ -155,7 +154,7 @@ new class extends Component
                     wire:click="$set('selectedCategories', []); $set('selectedTags', [])"
                     class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 underline"
                 >
-                    Clear filters
+                    {{ __('app.posts.clear_filters') }}
                 </button>
             @endif
         </div>
@@ -176,13 +175,13 @@ new class extends Component
                         wire:loading.attr="disabled"
                         class="px-6 py-2 text-sm font-medium border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50"
                     >
-                        <span wire:loading.remove>Load more</span>
-                        <span wire:loading>Loading...</span>
+                        <span wire:loading.remove>{{ __('app.posts.load_more') }}</span>
+                        <span wire:loading>{{ __('app.posts.loading') }}</span>
                     </button>
                 </div>
             @endif
         @else
-            <p class="text-center text-gray-500 py-12">No posts found.</p>
+            <p class="text-center text-gray-500 py-12">{{ __('app.posts.no_posts') }}</p>
         @endif
     </div>
 </section>
