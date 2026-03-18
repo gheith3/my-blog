@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
@@ -79,5 +80,10 @@ class Post extends Model
     public function isPublished(): bool
     {
         return $this->status === PostStatus::Published && $this->published_at !== null;
+    }
+
+    public function visitors(): HasMany
+    {
+        return $this->hasMany(VistorCount::class);
     }
 }

@@ -38,6 +38,13 @@ class TagResource extends Resource
             ->components([
                 TextInput::make('name')
                     ->required()
+                    ->label('Name (english)')
+                    ->columnSpanFull()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255),
+                TextInput::make('ar_name')
+                    ->label('Name (arabic)')
+                    ->required()
                     ->columnSpanFull()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
@@ -50,6 +57,10 @@ class TagResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')
+                    ->label('Name (english)')
+                    ->searchable(),
+                TextColumn::make('ar_name')
+                    ->label('Name (arabic)')
                     ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),

@@ -7,8 +7,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "craft-forge/filament-language-switcher": "*",
         "filament/filament": "*",
         "filament/spatie-laravel-settings-plugin": "*",
+        "joaopaulolndev/filament-edit-profile": "*",
         "kirschbaum-development/eloquent-power-joins": "*",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0"
