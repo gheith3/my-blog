@@ -6,6 +6,67 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer utilities {
+    .line-clamp-3 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* Simple prose styles for post content */
+.prose {
+    @apply text-gray-700 dark:text-gray-300 leading-relaxed;
+}
+
+.prose p {
+    @apply mb-4;
+}
+
+.prose h2 {
+    @apply text-2xl font-semibold mt-8 mb-4 text-gray-900 dark:text-gray-100;
+}
+
+.prose h3 {
+    @apply text-xl font-semibold mt-6 mb-3 text-gray-900 dark:text-gray-100;
+}
+
+.prose ul {
+    @apply list-disc pl-5 mb-4;
+}
+
+.prose ol {
+    @apply list-decimal pl-5 mb-4;
+}
+
+.prose blockquote {
+    @apply border-l-4 border-gray-200 dark:border-gray-700 pl-4 italic my-6;
+}
+
+.prose code {
+    @apply bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded text-sm;
+}
+
+.prose pre {
+    @apply bg-gray-100 dark:bg-gray-800 p-4 overflow-x-auto mb-4;
+}
+
+.prose a {
+    @apply underline hover:no-underline;
+}
+
+.prose img {
+    @apply max-w-full h-auto my-6;
 }
