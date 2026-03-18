@@ -36,6 +36,19 @@ class Post extends Model
         ];
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($tag) {
+            $tag->slug = str($tag->name)->slug();
+        });
+
+        static::updating(function ($tag) {
+            $tag->slug = str($tag->name)->slug();
+        });
+    }
+
     /**
      * @return BelongsTo<User, $this>
      */
