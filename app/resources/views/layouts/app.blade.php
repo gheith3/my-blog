@@ -1,11 +1,17 @@
+<?php
+
+use App\Settings\GeneralSettings;
+
+$settings = app(GeneralSettings::class);
+?>
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}" class="scroll-smooth">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="{{ $metaDescription ?? __('app.description') }}">
+        <meta name="description" content="{{ $metaDescription ?? $settings->get('site_description') }}">
 
-        <title>{{ $title ?? config('app.name') }}</title>
+        <title>{{ $title ?? $settings->get('site_name') }}</title>
 
         {{-- Fonts --}}
         <link rel="preconnect" href="https://fonts.googleapis.com">

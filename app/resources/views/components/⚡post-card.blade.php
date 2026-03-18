@@ -1,19 +1,21 @@
 <?php
 
 use Livewire\Component;
+use App\Settings\GeneralSettings;
 
 new class extends Component
 {
     public $post;
 }; ?>
 
+@php($settings = app(GeneralSettings::class))
 <article class="border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
     {{-- Content --}}
     <div class="p-6">
         {{-- Meta --}}
         <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-500 mb-3">
             <a href="{{ route('home', ['category' => $post->category?->id]) }}#posts" class="hover:underline">
-                {{ $post->category?->getLocalizedName() ?? __('app.posts.uncategorized') }}
+                {{ $post->category?->getLocalizedName() ?? $settings->get('posts_uncategorized') }}
             </a>
             <span>·</span>
             <span>{{ $post->published_at?->format('M j, Y') ?? $post->created_at->format('M j, Y') }}</span>
@@ -44,7 +46,7 @@ new class extends Component
 
         {{-- Read More --}}
         <a href="{{ route('posts.show', $post->slug) }}" class="text-sm font-medium text-gray-900 dark:text-gray-100 hover:underline">
-            {{ __('app.posts.read_more') }}
+            {{ $settings->get('posts_read_more') }}
         </a>
     </div>
 </article>

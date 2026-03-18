@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.3",
         "filament/filament": "*",
+        "filament/spatie-laravel-settings-plugin": "*",
         "kirschbaum-development/eloquent-power-joins": "*",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0"

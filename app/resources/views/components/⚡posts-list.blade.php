@@ -2,6 +2,7 @@
 
 use App\Models\Post;
 use App\Enums\PostStatus;
+use App\Settings\GeneralSettings;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 
@@ -57,6 +58,7 @@ new class extends Component
         return [
             'posts' => $posts,
             'categories' => \App\Models\Category::all(),
+            'settings' => app(GeneralSettings::class),
         ];
     }
 
@@ -88,9 +90,9 @@ new class extends Component
     <div class="max-w-4xl mx-auto px-4 sm:px-6">
         {{-- Header --}}
         <div class="mb-10">
-            <h2 class="text-2xl font-semibold mb-2">{{ __('app.posts.title') }}</h2>
+            <h2 class="text-2xl font-semibold mb-2">{{ $settings->get('posts_title') }}</h2>
             <p class="text-gray-600 dark:text-gray-400">
-                {{ __('app.posts.description') }}
+                {{ $settings->get('posts_description') }}
             </p>
         </div>
 
@@ -99,7 +101,7 @@ new class extends Component
             <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2 text-sm">
-                        <span class="text-gray-500">{{ __('app.posts.filtered_by') }}</span>
+                        <span class="text-gray-500">{{ $settings->get('posts_filtered_by') ?? 'Filtered by:' }}</span>
                         @foreach($selectedCategories as $catId)
                             @php($cat = $categories->firstWhere('id', $catId))
                             @if($cat)
@@ -121,7 +123,7 @@ new class extends Component
                         wire:click="$set('selectedCategories', []); $set('selectedTags', [])"
                         class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 underline"
                     >
-                        {{ __('app.posts.clear_filters') }}
+                        {{ $settings->get('posts_clear_filters') ?? 'Clear all' }}
                     </button>
                 </div>
             </div>
@@ -133,7 +135,7 @@ new class extends Component
             <input 
                 wire:model.live.debounce.300ms="search"
                 type="text" 
-                placeholder="{{ __('app.posts.search_placeholder') }}"
+                placeholder="{{ $settings->get('posts_search_placeholder') }}"
                 class="w-full px-4 py-2 border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-gray-400 dark:focus:border-gray-600"
             >
 
@@ -154,7 +156,7 @@ new class extends Component
                     wire:click="$set('selectedCategories', []); $set('selectedTags', [])"
                     class="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 underline"
                 >
-                    {{ __('app.posts.clear_filters') }}
+                    {{ $settings->get('posts_clear_filters') ?? 'Clear all' }}
                 </button>
             @endif
         </div>
@@ -175,8 +177,8 @@ new class extends Component
                         wire:loading.attr="disabled"
                         class="px-6 py-2 text-sm font-medium border border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50"
                     >
-                        <span wire:loading.remove>{{ __('app.posts.load_more') }}</span>
-                        <span wire:loading>{{ __('app.posts.loading') }}</span>
+                        <span wire:loading.remove>{{  __('app.posts.load_more') }}</span>
+                        <span wire:loading>{{  __('app.posts.loading') }}</span>
                     </button>
                 </div>
             @endif
