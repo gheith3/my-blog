@@ -3,7 +3,6 @@
 # Set PROJECT_NAME, GITHUB_USERNAME, and IMAGE_NAME in environment variables
 
 services:
-
   # Laravel Backend
   backend:
     image: ghcr.io/gheith3/blog:latest
@@ -15,19 +14,19 @@ services:
       # Application (REQUIRED)
       # ============================================
       - APP_NAME=${APP_NAME:-Laravel}
-      - APP_ENV=production
-      - APP_DEBUG=false
+      - APP_ENV=${APP_ENV:-production}
+      - APP_DEBUG=${APP_DEBUG:-false}
       - APP_URL=${APP_URL:-https://example.com}
       - ASSET_URL=${APP_URL:-https://example.com}
       - APP_KEY=${APP_KEY:?APP_KEY is required}
-      
+
       # ============================================
       # Logging
       # ============================================
       - LOG_CHANNEL=${LOG_CHANNEL:-stack}
       - LOG_STACK=${LOG_STACK:-single}
       - LOG_LEVEL=${LOG_LEVEL:-warning}
-      
+
       # ============================================
       # Database (PostgreSQL)
       # ============================================
@@ -37,7 +36,7 @@ services:
       - DB_DATABASE=${DB_DATABASE:-laravel}
       - DB_USERNAME=${DB_USERNAME:-laravel_user}
       - DB_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required}
-      
+
       # ============================================
       # Redis
       # ============================================
@@ -45,7 +44,7 @@ services:
       - REDIS_HOST=redis
       - REDIS_PASSWORD=${REDIS_PASSWORD:-}
       - REDIS_PORT=6379
-      
+
       # ============================================
       # Cache, Session, Queue
       # ============================================
