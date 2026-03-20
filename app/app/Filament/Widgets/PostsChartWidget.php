@@ -7,9 +7,14 @@ use Filament\Widgets\ChartWidget;
 
 class PostsChartWidget extends ChartWidget
 {
-    protected ?string $heading = 'Posts Created';
+    protected ?string $heading = null;
 
     protected static ?int $sort = 3;
+
+    public function getHeading(): ?string
+    {
+        return __('filament.widgets.posts_chart.heading');
+    }
 
     protected function getData(): array
     {
@@ -18,7 +23,7 @@ class PostsChartWidget extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Posts Created',
+                    'label' => __('filament.widgets.posts_chart.label'),
                     'data' => $data['counts'],
                     'backgroundColor' => [
                         'rgba(245, 158, 11, 0.8)',

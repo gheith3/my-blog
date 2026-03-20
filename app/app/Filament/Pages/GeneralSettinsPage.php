@@ -18,235 +18,240 @@ class GeneralSettinsPage extends SettingsPage
 
     protected static string $settings = GeneralSettings::class;
 
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.navigation.settings');
+    }
+
     public function form(Schema $schema): Schema
     {
         return $schema
             ->columns(1)
             ->components([
-                Section::make('Site Information')
-                    ->description('Basic site details and branding')
+                Section::make(__('filament.pages.general_settings.sections.site_info'))
+                    ->description(__('filament.pages.general_settings.sections.site_info_description'))
                     ->schema([
                         TextInput::make('site_name')
-                            ->label('Site Name (English)')
+                            ->label(__('filament.pages.general_settings.fields.site_name_en'))
                             ->required(),
                         TextInput::make('site_name_ar')
-                            ->label('Site Name (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.site_name_ar'))
                             ->required(),
                         TextInput::make('site_tagline')
-                            ->label('Tagline (English)')
+                            ->label(__('filament.pages.general_settings.fields.tagline_en'))
                             ->required(),
                         TextInput::make('site_tagline_ar')
-                            ->label('Tagline (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.tagline_ar'))
                             ->required(),
                         Textarea::make('site_description')
-                            ->label('Site Description (English)')
+                            ->label(__('filament.pages.general_settings.fields.site_description_en'))
                             ->rows(2)
                             ->required(),
                         Textarea::make('site_description_ar')
-                            ->label('Site Description (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.site_description_ar'))
                             ->rows(2)
                             ->required(),
                     ])
                     ->columns(2),
 
-                Section::make('Hero Section')
-                    ->description('Homepage hero area content')
+                Section::make(__('filament.pages.general_settings.sections.hero'))
+                    ->description(__('filament.pages.general_settings.sections.hero_description'))
                     ->schema([
                         TextInput::make('hero_welcome')
-                            ->label('Welcome Text (English)')
+                            ->label(__('filament.pages.general_settings.fields.hero_welcome_en'))
                             ->required(),
                         TextInput::make('hero_welcome_ar')
-                            ->label('Welcome Text (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.hero_welcome_ar'))
                             ->required(),
                         TextInput::make('hero_title')
-                            ->label('Title (English)')
+                            ->label(__('filament.pages.general_settings.fields.hero_title_en'))
                             ->required(),
                         TextInput::make('hero_title_ar')
-                            ->label('Title (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.hero_title_ar'))
                             ->required(),
                         Textarea::make('hero_description')
-                            ->label('Description (English)')
+                            ->label(__('filament.pages.general_settings.fields.hero_description_en'))
                             ->rows(3)
                             ->required(),
                         Textarea::make('hero_description_ar')
-                            ->label('Description (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.hero_description_ar'))
                             ->rows(3)
                             ->required(),
                         TextInput::make('hero_read_posts')
-                            ->label('Read Posts Button (English)')
+                            ->label(__('filament.pages.general_settings.fields.hero_read_posts_en'))
                             ->required(),
                         TextInput::make('hero_read_posts_ar')
-                            ->label('Read Posts Button (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.hero_read_posts_ar'))
                             ->required(),
                         TextInput::make('hero_about_me')
-                            ->label('About Me Button (English)')
+                            ->label(__('filament.pages.general_settings.fields.hero_about_me_en'))
                             ->required(),
                         TextInput::make('hero_about_me_ar')
-                            ->label('About Me Button (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.hero_about_me_ar'))
                             ->required(),
                     ])
                     ->columns(2),
 
-                Section::make('About Section')
-                    ->description('About page content and personal image')
+                Section::make(__('filament.pages.general_settings.sections.about'))
+                    ->description(__('filament.pages.general_settings.sections.about_description'))
                     ->schema([
                         FileUpload::make('about_image')
-                            ->label('Personal Image')
+                            ->label(__('filament.pages.general_settings.fields.about_image'))
                             ->image()
                             ->directory('about')
                             ->maxSize(2048),
                         TextInput::make('about_title')
-                            ->label('Title (English)')
+                            ->label(__('filament.pages.general_settings.fields.about_title_en'))
                             ->required(),
                         TextInput::make('about_title_ar')
-                            ->label('Title (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.about_title_ar'))
                             ->required(),
                         TextInput::make('about_subtitle')
-                            ->label('Subtitle (English)')
+                            ->label(__('filament.pages.general_settings.fields.about_subtitle_en'))
                             ->required(),
                         TextInput::make('about_subtitle_ar')
-                            ->label('Subtitle (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.about_subtitle_ar'))
                             ->required(),
                         Textarea::make('about_description_1')
-                            ->label('Paragraph 1 (English)')
+                            ->label(__('filament.pages.general_settings.fields.about_description_1_en'))
                             ->rows(3),
                         Textarea::make('about_description_1_ar')
-                            ->label('Paragraph 1 (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.about_description_1_ar'))
                             ->rows(3),
                         Textarea::make('about_description_2')
-                            ->label('Paragraph 2 (English)')
+                            ->label(__('filament.pages.general_settings.fields.about_description_2_en'))
                             ->rows(3),
                         Textarea::make('about_description_2_ar')
-                            ->label('Paragraph 2 (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.about_description_2_ar'))
                             ->rows(3),
                         Textarea::make('about_description_3')
-                            ->label('Paragraph 3 (English)')
+                            ->label(__('filament.pages.general_settings.fields.about_description_3_en'))
                             ->rows(3),
                         Textarea::make('about_description_3_ar')
-                            ->label('Paragraph 3 (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.about_description_3_ar'))
                             ->rows(3),
                     ])
                     ->columns(2),
 
-                Section::make('Posts Section')
-                    ->description('Blog posts listing page text')
+                Section::make(__('filament.pages.general_settings.sections.posts'))
+                    ->description(__('filament.pages.general_settings.sections.posts_description'))
                     ->schema([
                         TextInput::make('posts_title')
-                            ->label('Title (English)')
+                            ->label(__('filament.pages.general_settings.fields.posts_title_en'))
                             ->required(),
                         TextInput::make('posts_title_ar')
-                            ->label('Title (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.posts_title_ar'))
                             ->required(),
                         Textarea::make('posts_description')
-                            ->label('Description (English)')
+                            ->label(__('filament.pages.general_settings.fields.posts_description_en'))
                             ->rows(2),
                         Textarea::make('posts_description_ar')
-                            ->label('Description (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.posts_description_ar'))
                             ->rows(2),
                         TextInput::make('posts_search_placeholder')
-                            ->label('Search Placeholder (English)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_search_placeholder_en')),
                         TextInput::make('posts_search_placeholder_ar')
-                            ->label('Search Placeholder (Arabic)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_search_placeholder_ar')),
                         TextInput::make('posts_read_more')
-                            ->label('Read More Text (English)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_read_more_en')),
                         TextInput::make('posts_read_more_ar')
-                            ->label('Read More Text (Arabic)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_read_more_ar')),
                         TextInput::make('posts_back_to_posts')
-                            ->label('Back to Posts (English)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_back_to_posts_en')),
                         TextInput::make('posts_back_to_posts_ar')
-                            ->label('Back to Posts (Arabic)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_back_to_posts_ar')),
                         TextInput::make('posts_related_posts')
-                            ->label('Related Posts (English)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_related_posts_en')),
                         TextInput::make('posts_related_posts_ar')
-                            ->label('Related Posts (Arabic)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_related_posts_ar')),
                         TextInput::make('posts_last_updated')
-                            ->label('Last Updated (English)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_last_updated_en')),
                         TextInput::make('posts_last_updated_ar')
-                            ->label('Last Updated (Arabic)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_last_updated_ar')),
                         TextInput::make('posts_share_twitter')
-                            ->label('Share on Twitter (English)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_share_twitter_en')),
                         TextInput::make('posts_share_twitter_ar')
-                            ->label('Share on Twitter (Arabic)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_share_twitter_ar')),
                         TextInput::make('posts_no_posts')
-                            ->label('No Posts Message (English)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_no_posts_en')),
                         TextInput::make('posts_no_posts_ar')
-                            ->label('No Posts Message (Arabic)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_no_posts_ar')),
                         TextInput::make('posts_uncategorized')
-                            ->label('Uncategorized (English)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_uncategorized_en')),
                         TextInput::make('posts_uncategorized_ar')
-                            ->label('Uncategorized (Arabic)'),
+                            ->label(__('filament.pages.general_settings.fields.posts_uncategorized_ar')),
                     ])
                     ->columns(2),
 
-                Section::make('Navigation')
-                    ->description('Menu items text')
+                Section::make(__('filament.pages.general_settings.sections.navigation'))
+                    ->description(__('filament.pages.general_settings.sections.navigation_description'))
                     ->schema([
                         TextInput::make('nav_home')
-                            ->label('Home (English)')
+                            ->label(__('filament.pages.general_settings.fields.nav_home_en'))
                             ->required(),
                         TextInput::make('nav_home_ar')
-                            ->label('Home (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.nav_home_ar'))
                             ->required(),
                         TextInput::make('nav_about')
-                            ->label('About (English)')
+                            ->label(__('filament.pages.general_settings.fields.nav_about_en'))
                             ->required(),
                         TextInput::make('nav_about_ar')
-                            ->label('About (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.nav_about_ar'))
                             ->required(),
                         TextInput::make('nav_posts')
-                            ->label('Posts (English)')
+                            ->label(__('filament.pages.general_settings.fields.nav_posts_en'))
                             ->required(),
                         TextInput::make('nav_posts_ar')
-                            ->label('Posts (Arabic)')
+                            ->label(__('filament.pages.general_settings.fields.nav_posts_ar'))
                             ->required(),
                     ])
                     ->columns(2),
 
-                Section::make('Footer')
-                    ->description('Footer content')
+                Section::make(__('filament.pages.general_settings.sections.footer'))
+                    ->description(__('filament.pages.general_settings.sections.footer_description'))
                     ->schema([
                         TextInput::make('footer_copyright')
-                            ->label('Copyright Text (English)'),
+                            ->label(__('filament.pages.general_settings.fields.footer_copyright_en')),
                         TextInput::make('footer_copyright_ar')
-                            ->label('Copyright Text (Arabic)'),
+                            ->label(__('filament.pages.general_settings.fields.footer_copyright_ar')),
                         TextInput::make('footer_made_with')
-                            ->label('Made With Text (English)'),
+                            ->label(__('filament.pages.general_settings.fields.footer_made_with_en')),
                         TextInput::make('footer_made_with_ar')
-                            ->label('Made With Text (Arabic)'),
+                            ->label(__('filament.pages.general_settings.fields.footer_made_with_ar')),
                     ])
                     ->columns(2),
 
-                Section::make('Social Links')
-                    ->description('Social media URLs (optional)')
+                Section::make(__('filament.pages.general_settings.sections.social'))
+                    ->description(__('filament.pages.general_settings.sections.social_description'))
                     ->schema([
                         TextInput::make('twitter_url')
-                            ->label('Twitter URL')
+                            ->label(__('filament.pages.general_settings.fields.twitter_url'))
                             ->url()
                             ->placeholder('https://twitter.com/username'),
                         TextInput::make('github_url')
-                            ->label('GitHub URL')
+                            ->label(__('filament.pages.general_settings.fields.github_url'))
                             ->url()
                             ->placeholder('https://github.com/username'),
                         TextInput::make('linkedin_url')
-                            ->label('LinkedIn URL')
+                            ->label(__('filament.pages.general_settings.fields.linkedin_url'))
                             ->url()
                             ->placeholder('https://linkedin.com/in/username'),
                     ])
                     ->columns(1),
 
-                Section::make('Stats')
-                    ->description('Displayed statistics on homepage')
+                Section::make(__('filament.pages.general_settings.sections.stats'))
+                    ->description(__('filament.pages.general_settings.sections.stats_description'))
                     ->schema([
                         TextInput::make('stats_posts_count')
-                            ->label('Posts Count')
+                            ->label(__('filament.pages.general_settings.fields.stats_posts_count'))
                             ->numeric()
                             ->default(50),
                         TextInput::make('stats_categories_count')
-                            ->label('Categories Count')
+                            ->label(__('filament.pages.general_settings.fields.stats_categories_count'))
                             ->numeric()
                             ->default(5),
                         TextInput::make('stats_readers_count')
-                            ->label('Readers Count')
+                            ->label(__('filament.pages.general_settings.fields.stats_readers_count'))
                             ->numeric()
                             ->default(1000),
                     ])

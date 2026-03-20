@@ -26,6 +26,21 @@ class PostResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    public static function getModelLabel(): string
+    {
+        return __('filament.resources.post.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.post.plural');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.navigation.posts');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return PostForm::configure($schema);

@@ -33,23 +33,39 @@ class CategoryResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function getModelLabel(): string
+    {
+        return __('filament.resources.category.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.category.plural');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.navigation.categories');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextInput::make('name')
                     ->required()
-                    ->label('Name (english)')
+                    ->label(__('filament.resources.category.fields.name'))
                     ->columnSpanFull()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 TextInput::make('ar_name')
-                    ->label('Name (arabic)')
+                    ->label(__('filament.resources.category.fields.ar_name'))
                     ->required()
                     ->columnSpanFull()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 Textarea::make('description')
+                    ->label(__('filament.resources.category.fields.description'))
                     ->columnSpanFull()
                     ->maxLength(500),
             ]);
@@ -61,14 +77,16 @@ class CategoryResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')
-                    ->label('Name (english)')
+                    ->label(__('filament.resources.category.fields.name'))
                     ->searchable(),
                 TextColumn::make('ar_name')
-                    ->label('Name (arabic)')
+                    ->label(__('filament.resources.category.fields.ar_name'))
                     ->searchable(),
                 TextColumn::make('slug')
+                    ->label(__('filament.resources.category.fields.slug'))
                     ->searchable(),
                 TextColumn::make('description')
+                    ->label(__('filament.resources.category.fields.description'))
                     ->limit(150),
             ])
             ->filters([

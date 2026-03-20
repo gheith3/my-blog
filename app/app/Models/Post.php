@@ -23,6 +23,7 @@ class Post extends Model
         'slug',
         'content',
         'status',
+        'thumbnail',
         'published_at',
     ];
 
@@ -42,11 +43,11 @@ class Post extends Model
         parent::boot();
 
         static::creating(function ($tag) {
-            $tag->slug = str($tag->name)->slug();
+            $tag->slug = str($tag->title)->slug();
         });
 
         static::updating(function ($tag) {
-            $tag->slug = str($tag->name)->slug();
+            $tag->slug = str($tag->title)->slug();
         });
     }
 

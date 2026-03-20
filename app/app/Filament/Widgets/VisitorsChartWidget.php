@@ -7,11 +7,16 @@ use Filament\Widgets\ChartWidget;
 
 class VisitorsChartWidget extends ChartWidget
 {
-    protected ?string $heading = 'Visitors Overview';
+    protected ?string $heading = null;
 
     protected static ?int $sort = 2;
 
     protected int|string|array $columnSpan = 'full';
+
+    public function getHeading(): ?string
+    {
+        return __('filament.widgets.visitors_chart.heading');
+    }
 
     protected function getData(): array
     {
@@ -20,14 +25,14 @@ class VisitorsChartWidget extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Total Visits',
+                    'label' => __('filament.widgets.visitors_chart.total_visits'),
                     'data' => $data['total'],
                     'borderColor' => '#f59e0b',
                     'backgroundColor' => 'rgba(245, 158, 11, 0.1)',
                     'fill' => true,
                 ],
                 [
-                    'label' => 'Unique Visitors',
+                    'label' => __('filament.widgets.visitors_chart.unique_visitors'),
                     'data' => $data['unique'],
                     'borderColor' => '#3b82f6',
                     'backgroundColor' => 'rgba(59, 130, 246, 0.1)',

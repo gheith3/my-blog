@@ -21,6 +21,7 @@ class PostsTable
         return $table
             ->columns([
                 TextColumn::make('title')
+                    ->label(__('filament.resources.post.fields.title'))
                     ->searchable()
                     ->sortable()
                     ->weight('font-bold')
@@ -28,17 +29,19 @@ class PostsTable
                     ->tooltip(fn ($state): ?string => strlen($state) > 40 ? $state : null),
 
                 TextColumn::make('category.name')
+                    ->label(__('filament.resources.post.fields.category'))
                     ->searchable()
                     ->sortable()
                     ->badge()
                     ->color('info'),
 
                 TextColumn::make('user.name')
-                    ->label('Author')
+                    ->label(__('filament.resources.post.fields.author'))
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('status')
+                    ->label(__('filament.resources.post.fields.status'))
                     ->badge()
                     ->icon(fn (PostStatus $state): string => $state->getIcon())
                     ->color(fn (PostStatus $state): string => $state->getColor())
@@ -47,12 +50,14 @@ class PostsTable
                     ->sortable(),
 
                 TextColumn::make('published_at')
+                    ->label(__('filament.resources.post.fields.published_at'))
                     ->dateTime('M j, Y g:i A')
                     ->sortable()
-                    ->placeholder('Not published')
+                    ->placeholder(__('filament.messages.not_published'))
                     ->toggleable(),
 
                 TextColumn::make('tags.name')
+                    ->label(__('filament.resources.post.fields.tags'))
                     ->badge()
                     ->color('gray')
                     ->limitList(3)
@@ -61,16 +66,19 @@ class PostsTable
                     ->toggleable(),
 
                 TextColumn::make('created_at')
+                    ->label(__('filament.resources.post.fields.created_at'))
                     ->dateTime('M j, Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('updated_at')
+                    ->label(__('filament.resources.post.fields.updated_at'))
                     ->dateTime('M j, Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
                 TextColumn::make('deleted_at')
+                    ->label(__('filament.resources.post.fields.deleted_at'))
                     ->dateTime('M j, Y')
                     ->sortable()
                     ->placeholder('-')
@@ -79,16 +87,18 @@ class PostsTable
             ->filters([
                 SelectFilter::make('status')
                     ->options(PostStatus::class)
+                    ->label(__('filament.filters.status'))
                     ->native(false),
 
                 SelectFilter::make('category')
                     ->relationship('category', 'name')
+                    ->label(__('filament.filters.category'))
                     ->searchable()
                     ->preload(),
 
                 SelectFilter::make('user')
                     ->relationship('user', 'name')
-                    ->label('Author')
+                    ->label(__('filament.filters.author'))
                     ->searchable()
                     ->preload(),
 

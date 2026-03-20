@@ -32,18 +32,33 @@ class TagResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function getModelLabel(): string
+    {
+        return __('filament.resources.tag.label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.tag.plural');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.navigation.tags');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
                 TextInput::make('name')
                     ->required()
-                    ->label('Name (english)')
+                    ->label(__('filament.resources.tag.fields.name'))
                     ->columnSpanFull()
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 TextInput::make('ar_name')
-                    ->label('Name (arabic)')
+                    ->label(__('filament.resources.tag.fields.ar_name'))
                     ->required()
                     ->columnSpanFull()
                     ->unique(ignoreRecord: true)
@@ -57,12 +72,13 @@ class TagResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')
-                    ->label('Name (english)')
+                    ->label(__('filament.resources.tag.fields.name'))
                     ->searchable(),
                 TextColumn::make('ar_name')
-                    ->label('Name (arabic)')
+                    ->label(__('filament.resources.tag.fields.ar_name'))
                     ->searchable(),
                 TextColumn::make('slug')
+                    ->label(__('filament.resources.tag.fields.slug'))
                     ->searchable(),
             ])
             ->filters([

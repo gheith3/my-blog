@@ -33,11 +33,27 @@ class VistorCountResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'ip_address';
 
-    protected static UnitEnum|string|null $navigationGroup = 'Analytics';
+    protected static UnitEnum|string|null $navigationGroup = null;
 
-    protected static ?string $label = 'Visitor';
+    public static function getModelLabel(): string
+    {
+        return __('filament.resources.visitor.label');
+    }
 
-    protected static ?string $pluralLabel = 'Visitors';
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.visitor.plural');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.navigation.visitors');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation.analytics');
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -50,76 +66,76 @@ class VistorCountResource extends Resource
         return $schema
             ->columns(1)
             ->components([
-                Section::make('Visit Information')
+                Section::make(__('filament.resources.visitor.sections.visit_info'))
                     ->icon('heroicon-o-eye')
                     ->schema([
                         TextEntry::make('id')
-                            ->label('Visit ID')
+                            ->label(__('filament.resources.visitor.fields.visit_id'))
                             ->copyable(),
                         TextEntry::make('visited_at')
-                            ->label('Visited At')
+                            ->label(__('filament.resources.visitor.fields.visited_at'))
                             ->dateTime('F j, Y g:i:s A')
                             ->icon('heroicon-o-clock'),
                         TextEntry::make('created_at')
-                            ->label('Recorded At')
+                            ->label(__('filament.resources.visitor.fields.recorded_at'))
                             ->dateTime('F j, Y g:i:s A')
                             ->icon('heroicon-o-calendar'),
                     ])
                     ->columns(3),
 
-                Section::make('Page Details')
+                Section::make(__('filament.resources.visitor.sections.page_details'))
                     ->icon('heroicon-o-document-text')
                     ->schema([
                         TextEntry::make('post.title')
-                            ->label('Post Title')
-                            ->placeholder('Not a post page')
+                            ->label(__('filament.resources.visitor.fields.post_title'))
+                            ->placeholder(__('filament.messages.not_a_post'))
                             ->icon('heroicon-o-document')
                             ->url(fn ($record) => $record->post ? route('posts.show', $record->post->slug) : null, true),
                         TextEntry::make('route_name')
-                            ->label('Route Name')
-                            ->placeholder('No route')
+                            ->label(__('filament.resources.visitor.fields.route_name'))
+                            ->placeholder(__('filament.messages.no_route'))
                             ->icon('heroicon-o-map'),
                         TextEntry::make('url')
-                            ->label('Full URL')
+                            ->label(__('filament.resources.visitor.fields.full_url'))
                             ->copyable()
                             ->icon('heroicon-o-link')
                             ->url(fn ($record) => $record->url, true),
                         TextEntry::make('path')
-                            ->label('Path')
+                            ->label(__('filament.resources.visitor.fields.path'))
                             ->icon('heroicon-o-folder'),
                     ])
                     ->columns(2),
 
-                Section::make('Visitor Information')
+                Section::make(__('filament.resources.visitor.sections.visitor_info'))
                     ->icon('heroicon-o-user')
                     ->schema([
                         TextEntry::make('ip_address')
-                            ->label('IP Address')
+                            ->label(__('filament.resources.visitor.fields.ip_address'))
                             ->copyable()
                             ->icon('heroicon-o-server'),
                         TextEntry::make('session_id')
-                            ->label('Session ID')
+                            ->label(__('filament.resources.visitor.fields.session_id'))
                             ->copyable()
                             ->icon('heroicon-o-key')
                             ->limit(30),
                         TextEntry::make('user_agent')
-                            ->label('User Agent / Browser')
+                            ->label(__('filament.resources.visitor.fields.user_agent'))
                             ->icon('heroicon-o-computer-desktop')
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
 
-                Section::make('Metadata')
+                Section::make(__('filament.resources.visitor.sections.metadata'))
                     ->icon('heroicon-o-information-circle')
                     ->collapsed()
                     ->schema([
                         TextEntry::make('updated_at')
-                            ->label('Last Updated')
+                            ->label(__('filament.resources.visitor.fields.last_updated'))
                             ->dateTime('F j, Y g:i:s A'),
                         TextEntry::make('deleted_at')
-                            ->label('Deleted At')
+                            ->label(__('filament.resources.visitor.fields.deleted_at'))
                             ->dateTime('F j, Y g:i:s A')
-                            ->placeholder('Not deleted')
+                            ->placeholder(__('filament.messages.not_deleted'))
                             ->visible(fn ($record) => $record->trashed()),
                     ])
                     ->columns(2),
@@ -132,17 +148,21 @@ class VistorCountResource extends Resource
             ->recordTitleAttribute('ip_address')
             ->columns([
                 TextColumn::make('post.title')
+                    ->label(__('filament.resources.visitor.fields.post_title'))
                     ->searchable()
                     ->placeholder('N/A')
                     ->limit(30),
                 TextColumn::make('path')
+                    ->label(__('filament.resources.visitor.fields.path'))
                     ->searchable()
                     ->limit(40),
                 TextColumn::make('ip_address')
+                    ->label(__('filament.resources.visitor.fields.ip_address'))
                     ->searchable()
                     ->copyable()
                     ->icon('heroicon-o-server'),
                 TextColumn::make('visited_at')
+                    ->label(__('filament.resources.visitor.fields.visited_at'))
                     ->dateTime('M j, Y g:i A')
                     ->sortable(),
             ])
