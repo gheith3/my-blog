@@ -14,11 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
+        $seeders = [
             UsersSeeder::class,
-            CategorySeeder::class,
-            TagSeeder::class,
-            PostSeeder::class,
-        ]);
+        ];
+        if (app()->environment('local')) {
+            $seeders[] = CategorySeeder::class;
+            $seeders[] = TagSeeder::class;
+            $seeders[] = PostSeeder::class;
+        }
+        $this->call($seeders);
     }
 }
