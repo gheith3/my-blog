@@ -14,7 +14,7 @@ new class extends Component {
             {{-- Image --}}
             <div class="aspect-square bg-gray-100 dark:bg-gray-800 flex items-center justify-center overflow-hidden">
                 @if ($settings->about_image)
-                    <img src="{{ Storage::temporaryUrl($settings->about_image, now()->addMinutes(10)) }}"
+                    <img src="{{ Storage::disk('public')->url($settings->about_image) }}"
                         alt="{{ $settings->get('about_title') }}" class="w-full h-full object-cover">
                 @else
                     <svg class="w-20 h-20 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
