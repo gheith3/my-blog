@@ -73,8 +73,8 @@ new #[\Livewire\Attributes\Layout('layouts.app')] class extends Component {
                 {{-- Thumbnail --}}
                 @if ($post->thumbnail)
                     <div class="mb-8">
-                        <img src="{{ Storage::temporaryUrl($post->thumbnail, now()->addMinutes(10)) }}" alt="{{ $post->title }}"
-                            class="w-full h-auto rounded-lg shadow-md">
+                        <img src="{{ Storage::temporaryUrl($post->thumbnail, now()->addMinutes(10)) }}"
+                            alt="{{ $post->title }}" class="w-full h-auto rounded-lg shadow-md">
                     </div>
                 @endif
 
@@ -100,7 +100,7 @@ new #[\Livewire\Attributes\Layout('layouts.app')] class extends Component {
             </header>
 
             {{-- Content --}}
-            <div class="prose prose-gray dark:prose-invert max-w-none">
+            <div class="prose prose-gray dark:prose-invert max-w-none text-xl">
                 {!! $post->content !!}
             </div>
 

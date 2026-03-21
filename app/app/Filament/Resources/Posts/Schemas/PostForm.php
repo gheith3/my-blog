@@ -60,6 +60,10 @@ class PostForm
                     ->schema([
                         Select::make('category_id')
                             ->relationship('category', 'name')
+                            ->options(function () {
+                                $nameColumn = app()->getLocale() === 'ar' ? 'ar_name' : 'name';
+                                return \App\Models\Category::all()->pluck($nameColumn, 'id')->toArray();
+                            })
                             ->required()
                             ->searchable()
                             ->preload()
@@ -68,6 +72,10 @@ class PostForm
 
                         Select::make('tags')
                             ->relationship('tags', 'name')
+                            ->options(function () {
+                                $nameColumn = app()->getLocale() === 'ar' ? 'ar_name' : 'name';
+                                return \App\Models\Tag::all()->pluck($nameColumn, 'id')->toArray();
+                            })
                             ->multiple()
                             ->searchable()
                             ->preload()
@@ -79,12 +87,6 @@ class PostForm
                 Section::make(__('filament.resources.post.sections.publication'))
                     ->description(__('filament.resources.post.sections.publication_description'))
                     ->schema([
-                        Select::make('user_id')
-                            ->relationship('user', 'name')
-                            ->required()
-                            ->searchable()
-                            ->preload()
-                            ->label(__('filament.resources.post.fields.author')),
 
                         Select::make('status')
                             ->options(PostStatus::class)
