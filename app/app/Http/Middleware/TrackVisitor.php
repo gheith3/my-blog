@@ -30,6 +30,11 @@ class TrackVisitor
     {
         $response = $next($request);
 
+        // Skip if the ip is localhost or 127.0.0.1
+        if ($this->isLocalhost($request)) {
+            return $response;
+        }
+
         // Skip tracking for excluded paths
         if ($this->shouldSkipTracking($request)) {
             return $response;
@@ -111,7 +116,7 @@ class TrackVisitor
     {
         $url = $request->fullUrl();
 
-        return 'visited_'.md5($url);
+        return 'visited_' . md5($url);
     }
 
     /**
@@ -160,8 +165,19 @@ class TrackVisitor
         $userAgent = strtolower($request->userAgent() ?? '');
 
         $bots = [
-            'bot', 'crawl', 'spider', 'slurp', 'search', 'google', 'bing',
-            'yahoo', 'baidu', 'yandex', 'facebook', 'twitter', 'linkedin',
+            'bot',
+            'crawl',
+            'spider',
+            'slurp',
+            'search',
+            'google',
+            'bing',
+            'yahoo',
+            'baidu',
+            'yandex',
+            'facebook',
+            'twitter',
+            'linkedin',
         ];
 
         foreach ($bots as $bot) {
@@ -171,5 +187,20 @@ class TrackVisitor
         }
 
         return false;
+    }
+
+
+    /**
+     * Check if request is from a localhost
+     */
+    protected function isLocalhost(Request $request): bool
+    {
+        $locals = [
+            'localhost',
+            '127.0.0.1',
+            '::1',
+        ];
+
+        return in_array($request->ip(), $locals);
     }
 }
