@@ -97,8 +97,9 @@ class GeneralSettinsPage extends SettingsPage
                     ->schema([
                         FileUpload::make('about_image')
                             ->label(__('filament.pages.general_settings.fields.about_image'))
-                            ->image()
                             ->directory('about')
+                            ->disk('public')
+                            ->image()
                             ->maxSize(2048),
                         TextInput::make('about_title')
                             ->label(__('filament.pages.general_settings.fields.about_title_en'))

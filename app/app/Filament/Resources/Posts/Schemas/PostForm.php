@@ -40,8 +40,8 @@ class PostForm
 
                         FileUpload::make('thumbnail')
                             ->label(__('filament.resources.post.fields.thumbnail'))
-                            ->disk('public')
                             ->directory('thumbnails')
+                            ->disk('public')
                             ->image()
                             ->maxSize(1024 * 4)
                             ->columnSpanFull(),
