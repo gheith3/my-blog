@@ -64,7 +64,7 @@ class PostInfolist
                     ]),
 
                 Section::make(__('filament.resources.post.sections.analytics'))
-                    ->columns(2)
+                    ->columns(3)
                     ->schema([
                         TextEntry::make('visitor_count')
                             ->label(__('filament.resources.post.fields.total_visitors'))
@@ -79,6 +79,13 @@ class PostInfolist
                             ->state(fn (Post $record): int => $record->visitors()->distinct('session_id')->count('session_id'))
                             ->badge()
                             ->color('info'),
+
+                        TextEntry::make('comments_count')
+                            ->label(__('filament.resources.post.fields.comments_count'))
+                            ->icon(Heroicon::OutlinedChatBubbleLeftRight)
+                            ->state(fn (Post $record): int => $record->comments()->count())
+                            ->badge()
+                            ->color('warning'),
                     ]),
 
                 Section::make(__('filament.resources.post.sections.publication_status'))

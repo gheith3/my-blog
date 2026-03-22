@@ -58,6 +58,8 @@ return [
                 'published_at' => 'تاريخ النشر',
                 'total_visitors' => 'إجمالي الزوار',
                 'unique_visitors' => 'الزوار الفريدون',
+                'visitors_count' => 'الزوار',
+                'comments_count' => 'التعليقات',
                 'is_live' => 'منشور',
                 'created_at' => 'تاريخ الإنشاء',
                 'updated_at' => 'تاريخ التحديث',
@@ -86,6 +88,30 @@ return [
                 'user_agent' => 'المتصفح / وكيل المستخدم',
                 'last_updated' => 'آخر تحديث',
                 'deleted_at' => 'تاريخ الحذف',
+            ],
+        ],
+        'comment' => [
+            'label' => 'تعليق',
+            'plural' => 'التعليقات',
+            'sections' => [
+                'comment_info' => 'معلومات التعليق',
+                'technical_info' => 'المعلومات التقنية',
+                'technical_info_description' => 'عنوان IP وتفاصيل المتصفح',
+                'replies' => 'الردود',
+                'replies_description' => 'الردود المتداخلة على هذا التعليق',
+            ],
+            'fields' => [
+                'name' => 'الاسم',
+                'content' => 'المحتوى',
+                'ip_address' => 'عنوان IP',
+                'user_agent' => 'وكيل المستخدم',
+                'is_approved' => 'معتمد',
+                'reply_to' => 'رد على',
+                'replies_count' => 'الردود',
+                'created_at' => 'تاريخ الإنشاء',
+            ],
+            'actions' => [
+                'reply_heading' => 'الرد على التعليق',
             ],
         ],
     ],
@@ -210,6 +236,8 @@ return [
         'create' => 'إنشاء',
         'save' => 'حفظ',
         'cancel' => 'إلغاء',
+        'reply' => 'رد',
+        'submit_reply' => 'إرسال الرد',
     ],
 
     'filters' => [

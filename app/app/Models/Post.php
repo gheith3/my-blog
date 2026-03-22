@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
@@ -83,8 +84,34 @@ class Post extends Model
         return $this->status === PostStatus::Published && $this->published_at !== null;
     }
 
+    /**
+     * @return HasMany<VistorCount, $this>
+     */
     public function visitors(): HasMany
     {
         return $this->hasMany(VistorCount::class);
+    }
+
+    /**
+     * Get all comments for this post.
+     *
+     * @return MorphMany<Comment, $this>
+     */
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    /**
+     * Get only approved top-level comments.
+     *
+     * @return MorphMany<Comment, $this>
+     */
+    public function approvedComments(): MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable')
+            ->where('is_approved', true)
+            ->whereNull('parent_id')
+            ->orderBy('created_at', 'desc');
     }
 }

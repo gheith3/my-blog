@@ -69,4 +69,21 @@ return [
         'en' => 'English',
         'ar' => 'العربية',
     ],
+
+    'comments' => [
+        'title' => 'Comments',
+        'count' => ':count Comments',
+        'no_comments' => 'No comments yet. Be the first to comment!',
+        'reply' => 'Reply',
+        'add_comment' => 'Add a Comment',
+        'reply_to' => 'Reply to :name',
+        'cancel_reply' => 'Cancel Reply',
+        'name' => 'Name',
+        'name_placeholder' => 'Enter your name',
+        'content' => 'Comment',
+        'content_placeholder' => 'Write your comment here...',
+        'submit' => 'Submit',
+        'submitting' => 'Submitting...',
+        'required' => 'Required',
+    ],
 ];

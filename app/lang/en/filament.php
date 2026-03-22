@@ -58,6 +58,8 @@ return [
                 'published_at' => 'Published At',
                 'total_visitors' => 'Total Visitors',
                 'unique_visitors' => 'Unique Visitors',
+                'visitors_count' => 'Visitors',
+                'comments_count' => 'Comments',
                 'is_live' => 'Is Live',
                 'created_at' => 'Created At',
                 'updated_at' => 'Updated At',
@@ -86,6 +88,30 @@ return [
                 'user_agent' => 'User Agent / Browser',
                 'last_updated' => 'Last Updated',
                 'deleted_at' => 'Deleted At',
+            ],
+        ],
+        'comment' => [
+            'label' => 'Comment',
+            'plural' => 'Comments',
+            'sections' => [
+                'comment_info' => 'Comment Information',
+                'technical_info' => 'Technical Information',
+                'technical_info_description' => 'IP address and browser details',
+                'replies' => 'Replies',
+                'replies_description' => 'Nested replies to this comment',
+            ],
+            'fields' => [
+                'name' => 'Name',
+                'content' => 'Content',
+                'ip_address' => 'IP Address',
+                'user_agent' => 'User Agent',
+                'is_approved' => 'Approved',
+                'reply_to' => 'Reply To',
+                'replies_count' => 'Replies',
+                'created_at' => 'Created At',
+            ],
+            'actions' => [
+                'reply_heading' => 'Reply to Comment',
             ],
         ],
     ],
@@ -210,6 +236,8 @@ return [
         'create' => 'Create',
         'save' => 'Save',
         'cancel' => 'Cancel',
+        'reply' => 'Reply',
+        'submit_reply' => 'Submit Reply',
     ],
 
     'filters' => [

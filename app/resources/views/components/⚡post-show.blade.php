@@ -122,6 +122,9 @@ new #[\Livewire\Attributes\Layout('layouts.app')] class extends Component {
         </div>
     </article>
 
+    {{-- Comments Section --}}
+    <livewire:comments :post="$post" />
+
     {{-- Related Posts --}}
     @if ($relatedPosts->count() > 0)
         <section class="py-16 border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
@@ -143,6 +146,8 @@ new #[\Livewire\Attributes\Layout('layouts.app')] class extends Component {
             </div>
         </section>
     @endif
+
+
 
     <livewire:footer />
 </div>

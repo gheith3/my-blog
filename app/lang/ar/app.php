@@ -69,4 +69,21 @@ return [
         'en' => 'English',
         'ar' => 'العربية',
     ],
+
+    'comments' => [
+        'title' => 'التعليقات',
+        'count' => ':count تعليق',
+        'no_comments' => 'لا توجد تعليقات بعد. كن أول من يعلق!',
+        'reply' => 'رد',
+        'add_comment' => 'أضف تعليقاً',
+        'reply_to' => 'الرد على :name',
+        'cancel_reply' => 'إلغاء الرد',
+        'name' => 'الاسم',
+        'name_placeholder' => 'أدخل اسمك',
+        'content' => 'التعليق',
+        'content_placeholder' => 'اكتب تعليقك هنا...',
+        'submit' => 'إرسال',
+        'submitting' => 'جاري الإرسال...',
+        'required' => 'مطلوب',
+    ],
 ];

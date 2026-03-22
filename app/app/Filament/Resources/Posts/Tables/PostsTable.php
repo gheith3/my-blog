@@ -35,11 +35,6 @@ class PostsTable
                     ->badge()
                     ->color('info'),
 
-                TextColumn::make('user.name')
-                    ->label(__('filament.resources.post.fields.author'))
-                    ->searchable()
-                    ->sortable(),
-
                 TextColumn::make('status')
                     ->label(__('filament.resources.post.fields.status'))
                     ->badge()
@@ -49,20 +44,20 @@ class PostsTable
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('published_at')
-                    ->label(__('filament.resources.post.fields.published_at'))
-                    ->dateTime('M j, Y g:i A')
+                TextColumn::make('visitors_count')
+                    ->label(__('filament.resources.post.fields.visitors_count'))
+                    ->counts('visitors')
                     ->sortable()
-                    ->placeholder(__('filament.messages.not_published'))
+                    ->badge()
+                    ->color('success')
                     ->toggleable(),
 
-                TextColumn::make('tags.name')
-                    ->label(__('filament.resources.post.fields.tags'))
+                TextColumn::make('comments_count')
+                    ->label(__('filament.resources.post.fields.comments_count'))
+                    ->counts('comments')
+                    ->sortable()
                     ->badge()
-                    ->color('gray')
-                    ->limitList(3)
-                    ->expandableLimitedList()
-                    ->searchable()
+                    ->color('warning')
                     ->toggleable(),
 
                 TextColumn::make('created_at')
