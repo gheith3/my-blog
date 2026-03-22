@@ -13,6 +13,7 @@ new #[\Livewire\Attributes\Layout('layouts.app')] class extends Component {
     {
         $this->post = Post::where('slug', $slug)
             ->with(['category', 'user', 'tags'])
+            ->where('status', PostStatus::Published)
             ->firstOrFail();
 
         $this->loadRelatedPosts();
@@ -45,7 +46,15 @@ new #[\Livewire\Attributes\Layout('layouts.app')] class extends Component {
     }
 }; ?>
 
-@php($settings = app(GeneralSettings::class))
+@php
+    $settings = app(GeneralSettings::class);
+    // Set meta data for social sharing
+    $title = $post->title;
+    $metaDescription = strip_tags(substr($post->content, 0, 100)) . (strlen($post->content) > 100 ? '...' : '');
+    $ogType = 'article';
+    $ogUrl = route('posts.show', $post->slug);
+    $ogImage = $post->thumbnail ? Storage::disk('public')->url($post->thumbnail) : null;
+@endphp
 <div>
     <livewire:navigation />
 
@@ -73,8 +82,8 @@ new #[\Livewire\Attributes\Layout('layouts.app')] class extends Component {
                 {{-- Thumbnail --}}
                 @if ($post->thumbnail)
                     <div class="mb-8">
-                        <img src="{{ Storage::temporaryUrl($post->thumbnail, now()->addMinutes(10)) }}"
-                            alt="{{ $post->title }}" class="w-full h-auto rounded-lg shadow-md">
+                        <img src="{{ Storage::disk('public')->url($post->thumbnail) }}" alt="{{ $post->title }}"
+                            class="w-full h-auto rounded-lg shadow-md">
                     </div>
                 @endif
 

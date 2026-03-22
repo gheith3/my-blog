@@ -14,6 +14,25 @@ $settings = app(GeneralSettings::class);
 
     <title>{{ $title ?? $settings->get('site_name') }}</title>
 
+    {{-- Open Graph Meta Tags for Social Sharing --}}
+    <meta property="og:title" content="{{ $title ?? $settings->get('site_name') }}">
+    <meta property="og:description" content="{{ $metaDescription ?? $settings->get('site_description') }}">
+    <meta property="og:type" content="{{ $ogType ?? 'website' }}">
+    <meta property="og:url" content="{{ $ogUrl ?? url()->current() }}">
+    @if (isset($ogImage) && $ogImage)
+        <meta property="og:image" content="{{ $ogImage }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+    @endif
+
+    {{-- Twitter Card Meta Tags --}}
+    <meta name="twitter:card" content="{{ isset($ogImage) && $ogImage ? 'summary_large_image' : 'summary' }}">
+    <meta name="twitter:title" content="{{ $title ?? $settings->get('site_name') }}">
+    <meta name="twitter:description" content="{{ $metaDescription ?? $settings->get('site_description') }}">
+    @if (isset($ogImage) && $ogImage)
+        <meta name="twitter:image" content="{{ $ogImage }}">
+    @endif
+
 
     <!-- Tab icon -->
     @if ($settings->about_image)
