@@ -1,47 +1,12 @@
-<?php
-
-use App\Settings\GeneralSettings;
-
-$settings = app(GeneralSettings::class);
-?>
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}" class="scroll-smooth">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="{{ $metaDescription ?? $settings->get('site_description') }}">
 
-    <title>{{ $title ?? $settings->get('site_name') }}</title>
-
-    {{-- Open Graph Meta Tags for Social Sharing --}}
-    <meta property="og:title" content="{{ $title ?? $settings->get('site_name') }}">
-    <meta property="og:description" content="{{ $metaDescription ?? $settings->get('site_description') }}">
-    <meta property="og:type" content="{{ $ogType ?? 'website' }}">
-    <meta property="og:url" content="{{ $ogUrl ?? url()->current() }}">
-    @if (isset($ogImage) && $ogImage)
-        <meta property="og:image" content="{{ $ogImage }}">
-        <meta property="og:image:width" content="1200">
-        <meta property="og:image:height" content="630">
-    @endif
-
-    {{-- Twitter Card Meta Tags --}}
-    <meta name="twitter:card" content="{{ isset($ogImage) && $ogImage ? 'summary_large_image' : 'summary' }}">
-    <meta name="twitter:title" content="{{ $title ?? $settings->get('site_name') }}">
-    <meta name="twitter:description" content="{{ $metaDescription ?? $settings->get('site_description') }}">
-    @if (isset($ogImage) && $ogImage)
-        <meta name="twitter:image" content="{{ $ogImage }}">
-    @endif
-
-
-    <!-- Tab icon -->
-    @if ($settings->about_image)
-        <link rel="icon" href="{{ Storage::temporaryUrl($settings->about_image, now()->addMinutes(10)) }}"
-            type="image/x-icon">
-        <link rel="shortcut icon" href="{{ Storage::temporaryUrl($settings->about_image, now()->addMinutes(10)) }}"
-            type="image/x-icon">
-    @endif
-
+    
+    @yield('headMeta')
 
     {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">

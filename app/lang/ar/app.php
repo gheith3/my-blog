@@ -50,6 +50,7 @@ return [
         'related_posts' => 'مقالات ذات صلة',
         'last_updated' => 'آخر تحديث',
         'share_twitter' => 'شارك على تويتر',
+        'not_published' => 'هذا المقال غير منشور',
     ],
 
     'footer' => [

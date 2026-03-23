@@ -50,6 +50,7 @@ return [
         'related_posts' => 'Related Posts',
         'last_updated' => 'Last updated',
         'share_twitter' => 'Share on Twitter',
+        'not_published' => 'This post is not published yet',
     ],
 
     'footer' => [

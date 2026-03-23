@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Posts\Pages;
 
 use App\Filament\Resources\Posts\PostResource;
+use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
@@ -14,6 +15,10 @@ class ViewPost extends ViewRecord
     {
         return [
             EditAction::make(),
+            Action::make('view_on_site')
+                ->label('View on site')
+                ->url(route('posts.show', $this->record->slug))
+                ->openUrlInNewTab(),
         ];
     }
 }
