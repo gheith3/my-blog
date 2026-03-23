@@ -10,7 +10,7 @@ new #[\Livewire\Attributes\Layout('layouts.app')] class extends Component {
     $settings = app(\App\Settings\GeneralSettings::class);
 @endphp
 @section('headMeta')
-    <title>{{ $settings->get('site_name') }}</title>
+    <title>{{ app()->getLocale() == 'ar' ? $settings->get('site_name_ar') : $settings->get('site_name') }}</title>
     <meta name="description" content="{{ $settings->get('site_description') }}">
     <!-- Tab icon -->
     @if ($settings->about_image)

@@ -33,6 +33,9 @@ return [
         'post' => [
             'label' => 'مقال',
             'plural' => 'المقالات',
+            'actions' => [
+                'view_on_site' => 'معاينة',
+            ],
             'sections' => [
                 'content' => 'محتوى المقال',
                 'content_description' => 'المحتوى الرئيسي للمقال',

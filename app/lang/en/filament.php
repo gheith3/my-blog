@@ -33,6 +33,9 @@ return [
         'post' => [
             'label' => 'Post',
             'plural' => 'Posts',
+            'actions' => [
+                'view_on_site' => 'View on site',
+            ],
             'sections' => [
                 'content' => 'Post Content',
                 'content_description' => 'The main content of your post',

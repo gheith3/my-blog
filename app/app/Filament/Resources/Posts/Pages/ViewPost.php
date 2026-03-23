@@ -16,7 +16,7 @@ class ViewPost extends ViewRecord
         return [
             EditAction::make(),
             Action::make('view_on_site')
-                ->label('View on site')
+                ->label(__('filament.resources.post.actions.view_on_site'))
                 ->url(route('posts.show', $this->record->slug))
                 ->openUrlInNewTab(),
         ];
