@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -43,12 +44,8 @@ class Post extends Model
     {
         parent::boot();
 
-        static::creating(function ($tag) {
-            $tag->slug = str($tag->title)->slug();
-        });
-
-        static::updating(function ($tag) {
-            $tag->slug = str($tag->title)->slug();
+        static::creating(function ($post) {
+            $post->slug = Str::random(8);
         });
     }
 
