@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Posts\Pages;
 
 use App\Filament\Resources\Posts\PostResource;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
@@ -16,6 +17,10 @@ class EditPost extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('view_on_site')
+                ->label(__('filament.resources.post.actions.view_on_site'))
+                ->url(route('posts.show', $this->record->slug))
+                ->openUrlInNewTab(),
             ViewAction::make(),
             DeleteAction::make(),
             ForceDeleteAction::make(),
