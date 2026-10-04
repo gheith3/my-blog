@@ -1,21 +1,20 @@
-name: Build and Push Docker Image
+name: Build and Push Docker Image (Production)
 
 on:
   push:
-    branches:
-      - production
+    tags:
+      - 'prod-*'
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: gheith3/blog
 
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -27,7 +26,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata for Docker
+      - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -36,7 +35,7 @@ jobs:
             type=raw,value=latest
             type=sha,prefix=
 
-      - name: Build and push Docker image
+      - name: Build and push image
         uses: docker/build-push-action@v5
         with:
           context: ./app
@@ -45,6 +44,11 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+  trigger-portainer:
+    needs: build
+    if: needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    steps:
       - name: Trigger Portainer webhook
         run: |
           curl -X POST "${{ secrets.PORTAINER_WEBHOOK_URL }}"
