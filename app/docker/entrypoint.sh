@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Laravel Docker Entrypoint Script v2
-echo "🚀 Starting Mo Backend Backend..."
+echo "🚀 Starting blog backend..."
 
 # Create storage directories FIRST (required for artisan commands)
 echo "📁 Setting up storage directories..."
@@ -59,12 +59,33 @@ esac
 echo "🔗 Creating storage symlink..."
 php artisan storage:link --force 2>/dev/null || true
 
+# Passport's RSA keypair signs the MCP OAuth/API tokens (the auth:api guard).
+# passport:keys refuses to overwrite existing keys, so this is safe on every
+# boot: it creates them once, and they persist in the storage volume.
+# Without them every OAuth/API-token request fails, so stop the boot if this fails.
+echo "🔑 Ensuring Passport encryption keys exist..."
+if ! php artisan passport:keys; then
+    echo "❌ Passport keys could not be created. Aborting."
+    exit 1
+fi
+# passport:keys sets 600/660 only at creation. The blanket "chmod -R 775"
+# above loosens them again on every boot, and league/oauth2-server refuses
+# keys with loose permissions, so re-tighten them each time.
+if [ -f storage/oauth-private.key ]; then
+    chmod 600 storage/oauth-private.key
+    chmod 660 storage/oauth-public.key
+    chown www-data:www-data storage/oauth-private.key storage/oauth-public.key
+fi
 
-
-# Run database migrations if requested
+# Run database migrations if requested. Seeding is never run here: the
+# seeders create a known default admin login, so they must not run on a live
+# server. Run them by hand only in local development.
 if [ "$RUN_MIGRATIONS" = "true" ]; then
-    echo "🗄️ Running database migrations and seeding..."
-    php artisan migrate --seed --force --no-interaction
+    echo "🗄️ Running database migrations..."
+    if ! php artisan migrate --force --no-interaction; then
+        echo "❌ Migrations failed. Aborting so the app does not run against a stale schema."
+        exit 1
+    fi
 fi
 
 # Clear and cache configuration (only if not already cached)
@@ -80,6 +101,11 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 php artisan icons:cache
+
+# The artisan commands above run as root and can leave root-owned files in
+# storage and bootstrap/cache, which PHP-FPM (www-data) then cannot rewrite.
+# chown leaves permission bits alone, so the Passport key modes stay 600/660.
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 echo "✅ Laravel initialization complete!"
 
