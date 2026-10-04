@@ -10,23 +10,6 @@ use Laravel\Passport\Passport;
 
 uses(RefreshDatabase::class);
 
-function callBlogTool(string $name, array $arguments = []): array
-{
-    $response = test()->postJson('/mcp/blog', [
-        'jsonrpc' => '2.0',
-        'id' => 1,
-        'method' => 'tools/call',
-        'params' => ['name' => $name, 'arguments' => $arguments],
-    ], ['Accept' => 'application/json, text/event-stream']);
-
-    return $response->json();
-}
-
-function blogToolText(array $response): string
-{
-    return $response['result']['content'][0]['text'];
-}
-
 it('rejects a request with no token', function () {
     $this->postJson('/mcp/blog', [
         'jsonrpc' => '2.0',
@@ -43,12 +26,29 @@ it('exposes the post and comment tools', function () {
         'jsonrpc' => '2.0',
         'id' => 1,
         'method' => 'tools/list',
+        'params' => ['per_page' => 50],
     ], ['Accept' => 'application/json, text/event-stream']);
 
     $names = collect($response->json('result.tools'))->pluck('name');
 
     expect($names)->toContain('list-posts', 'create-post', 'update-post', 'delete-post')
-        ->toContain('list-comments', 'create-comment', 'update-comment', 'delete-comment');
+        ->toContain('list-comments', 'create-comment', 'update-comment', 'delete-comment')
+        ->toContain('edit-post', 'get-posts', 'search-posts')
+        ->toContain('list-revisions', 'get-revision', 'restore-revision', 'get-style-guide');
+});
+
+it('announces v2 with the style-guide instructions', function () {
+    Passport::actingAs(User::factory()->create(), ['posts:read']);
+
+    $response = $this->postJson('/mcp/blog', [
+        'jsonrpc' => '2.0',
+        'id' => 1,
+        'method' => 'initialize',
+        'params' => ['protocolVersion' => '2025-03-26'],
+    ], ['Accept' => 'application/json, text/event-stream']);
+
+    expect($response->json('result.serverInfo.version'))->toBe('2.0.0')
+        ->and($response->json('result.instructions'))->toContain('Before any write to post content, read the style guide and follow it. When proofreading, change only errors, never word choice.');
 });
 
 it('creates a draft post owned by the token user', function () {
@@ -89,8 +89,12 @@ it('lists and reads posts with a read token', function () {
     Passport::actingAs(User::factory()->create(), ['posts:read']);
     $post = Post::factory()->published()->create(['title' => 'Readable post']);
 
-    expect(blogToolText(callBlogTool('list-posts')))->toContain('Readable post')
-        ->and(blogToolText(callBlogTool('get-post', ['post_id' => $post->id])))->toContain("Post [{$post->id}]: Readable post");
+    expect(blogToolText(callBlogTool('list-posts')))->toContain('Readable post');
+
+    $post = json_decode(blogToolText(callBlogTool('get-post', ['post_id' => $post->id])), true);
+
+    expect($post['title'])->toBe('Readable post')
+        ->and($post['post_id'])->not->toBeNull();
 });
 
 it('stamps published_at when a post is moved to published', function () {

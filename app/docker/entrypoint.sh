@@ -91,6 +91,14 @@ if [ "$RUN_MIGRATIONS" = "true" ]; then
         echo "❌ Migrations failed. Aborting so the app does not run against a stale schema."
         exit 1
     fi
+
+    # Backfill excerpts and baseline revisions for posts that predate Blog MCP
+    # v2. The command is idempotent (posts with an excerpt and any revision are
+    # skipped), so it is safe to run on every boot. A failure here is not worth
+    # blocking the boot: v2 works without the backfill, it just means old posts
+    # have no restore point until their first v2 save.
+    echo "📝 Backfilling Blog MCP v2 data for existing posts..."
+    php artisan blog:backfill-v2 --no-interaction || echo "⚠️ v2 backfill failed - continuing boot without it."
 fi
 
 # Clear and cache configuration (only if not already cached)

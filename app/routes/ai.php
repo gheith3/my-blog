@@ -1,7 +1,17 @@
 <?php
 
 use App\Mcp\Servers\BlogServer;
+use App\Mcp\Support\ClientNameStore;
+use Illuminate\Support\Facades\Event;
+use Laravel\Mcp\Events\SessionInitialized;
 use Laravel\Mcp\Facades\Mcp;
+
+// laravel/mcp only exposes the MCP clientInfo at initialize time, through this
+// event. It is cached by session id so write tools can stamp revisions with
+// the real client name (Blog MCP v2, sections 2 and 6).
+Event::listen(SessionInitialized::class, function (SessionInitialized $event): void {
+    ClientNameStore::remember($event->sessionId, $event->clientInfo);
+});
 
 // Blog MCP server: AI agents manage posts and comments over MCP with the
 // abilities their token grants. The "api" guard is Passport (config/auth.php)

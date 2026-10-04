@@ -43,7 +43,38 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * Call a tool on the Blog MCP server over its JSON-RPC HTTP endpoint.
+ */
+function callBlogTool(string $name, array $arguments = []): array
 {
-    // ..
+    $response = test()->postJson('/mcp/blog', [
+        'jsonrpc' => '2.0',
+        'id' => 1,
+        'method' => 'tools/call',
+        'params' => ['name' => $name, 'arguments' => $arguments],
+    ], ['Accept' => 'application/json, text/event-stream']);
+
+    return $response->json();
+}
+
+function blogToolText(array $response): string
+{
+    return $response['result']['content'][0]['text'];
+}
+
+/**
+ * Decode the JSON payload of a v2 tool response (receipt, read result or the
+ * single error shape from Blog MCP v2 section 2).
+ */
+function blogToolPayload(array $response): array
+{
+    return json_decode(blogToolText($response), true, 512, JSON_THROW_ON_ERROR);
+}
+
+function blogToolError(array $response): array
+{
+    expect($response['result']['isError'])->toBeTrue();
+
+    return blogToolPayload($response)['error'];
 }

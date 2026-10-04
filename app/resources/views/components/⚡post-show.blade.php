@@ -54,7 +54,9 @@ new #[\Livewire\Attributes\Layout('layouts.app')] class extends Component {
     $settings = app(GeneralSettings::class);
     // Set meta data for social sharing
     $title = $post->title;
-    $metaDescription = strip_tags(substr($post->content, 0, 100)) . (strlen($post->content) > 100 ? '...' : '');
+    $metaDescription = filled($post->excerpt)
+        ? $post->excerpt
+        : app(\App\Services\PostService::class)->generateExcerpt($post->content);
     $ogType = 'article';
     $ogUrl = route('posts.show', $post->slug);
     $ogImage = $post->thumbnail ? Storage::disk('public')->url($post->thumbnail) : null;

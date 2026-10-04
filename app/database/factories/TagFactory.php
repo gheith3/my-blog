@@ -22,7 +22,8 @@ class TagFactory extends Factory
 
         return [
             'name' => $name,
-            'ar_name' => null,
+            // See CategoryFactory: ar_name must never be null.
+            'ar_name' => fake()->randomElement(['خاطرة', 'تقنية', 'أدب', 'سرد', 'ثقافة', 'يوميات', 'قراءة', 'تأمل']).' '.$name,
             'slug' => Str::slug($name),
         ];
     }

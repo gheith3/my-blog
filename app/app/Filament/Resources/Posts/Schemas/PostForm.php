@@ -3,10 +3,13 @@
 namespace App\Filament\Resources\Posts\Schemas;
 
 use App\Enums\PostStatus;
+use App\Models\Category;
+use App\Models\Tag;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -53,6 +56,14 @@ class PostForm
                             ->fileAttachmentsDisk('public')
                             ->fileAttachmentsDirectory('uploads')
                             ->columnSpanFull(),
+
+                        Textarea::make('excerpt')
+                            ->maxLength(300)
+                            ->rows(3)
+                            ->label(__('filament.resources.post.fields.excerpt'))
+                            ->placeholder(__('filament.resources.post.fields.excerpt'))
+                            ->helperText(__('filament.resources.post.fields.excerpt_helper'))
+                            ->columnSpanFull(),
                     ]),
 
                 Section::make(__('filament.resources.post.sections.organization'))
@@ -62,7 +73,8 @@ class PostForm
                             ->relationship('category', 'name')
                             ->options(function () {
                                 $nameColumn = app()->getLocale() === 'ar' ? 'ar_name' : 'name';
-                                return \App\Models\Category::all()->pluck($nameColumn, 'id')->toArray();
+
+                                return Category::all()->pluck($nameColumn, 'id')->toArray();
                             })
                             ->required()
                             ->searchable()
@@ -74,7 +86,8 @@ class PostForm
                             ->relationship('tags', 'name')
                             ->options(function () {
                                 $nameColumn = app()->getLocale() === 'ar' ? 'ar_name' : 'name';
-                                return \App\Models\Tag::all()->pluck($nameColumn, 'id')->toArray();
+
+                                return Tag::all()->pluck($nameColumn, 'id')->toArray();
                             })
                             ->multiple()
                             ->searchable()

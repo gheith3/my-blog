@@ -18,9 +18,14 @@ class GeneralSettinsPage extends SettingsPage
 
     protected static string $settings = GeneralSettings::class;
 
-    public static function getNavigationLabel(): string
+    public static function getNavigationGroup(): ?string
     {
         return __('filament.navigation.settings');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.pages.general_settings.title');
     }
 
     public function form(Schema $schema): Schema

@@ -1,6 +1,7 @@
 <?php
 
 use App\Settings\GeneralSettings;
+use App\Settings\StyleGuideSettings;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelSettings\SettingsCasts\DataCast;
 use Spatie\LaravelSettings\SettingsCasts\DateTimeInterfaceCast;
@@ -16,6 +17,7 @@ return [
      */
     'settings' => [
         GeneralSettings::class,
+        StyleGuideSettings::class,
     ],
 
     /*

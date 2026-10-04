@@ -52,6 +52,8 @@ return [
             'fields' => [
                 'title' => 'Title',
                 'slug' => 'Slug',
+                'excerpt' => 'Excerpt',
+                'excerpt_helper' => 'Shown on listing cards and as the meta description. Leave empty to generate it from the first paragraph.',
                 'content' => 'Content',
                 'thumbnail' => 'Thumbnail',
                 'category' => 'Category',
@@ -67,6 +69,41 @@ return [
                 'created_at' => 'Created At',
                 'updated_at' => 'Updated At',
                 'deleted_at' => 'Deleted At',
+            ],
+            'revisions' => [
+                'title' => 'Revision History',
+                'banner' => [
+                    'heading' => 'Pending change from :client',
+                    'unknown_client' => 'an agent',
+                    'created_at' => 'Staged at :date',
+                    'based_on' => 'Based on version :base (current version: :current)',
+                ],
+                'actions' => [
+                    'approve' => 'Approve',
+                    'reject' => 'Reject',
+                    'restore' => 'Restore this version',
+                    'approve_confirm' => 'Apply this pending change to the live post? The version will increment.',
+                    'reject_confirm' => 'Discard this pending change? The live post stays untouched.',
+                    'restore_confirm' => 'Overwrite the live post with this revision snapshot? A new revision will be written.',
+                ],
+                'notifications' => [
+                    'approved' => 'Change approved — the post is now at version :version.',
+                    'conflict' => 'The change could not be applied to the current version and is now marked as conflict.',
+                    'rejected' => 'Pending change rejected; the live post was not modified.',
+                    'restored' => 'Revision restored — the post is now at version :version.',
+                    'not_pending' => 'This revision is no longer pending.',
+                ],
+                'fields' => [
+                    'state' => 'State',
+                    'source' => 'Source',
+                    'client_name' => 'Client',
+                    'note' => 'Note',
+                    'unguarded' => 'Unguarded',
+                    'version' => 'Version',
+                    'base_version' => 'Base Version',
+                    'decided_at' => 'Decided At',
+                    'created_at' => 'Created At',
+                ],
             ],
         ],
         'visitor' => [
@@ -120,6 +157,17 @@ return [
     ],
 
     'pages' => [
+        'style_guide' => [
+            'title' => 'Writing Style',
+            'navigation' => 'Writing style',
+            'section' => 'House Style',
+            'section_description' => 'The Markdown guide every agent reads before changing post text. Saving bumps the version.',
+            'fields' => [
+                'content' => 'Style Guide (Markdown)',
+                'version' => 'Version',
+                'updated_at' => 'Last Updated',
+            ],
+        ],
         'general_settings' => [
             'title' => 'General Settings',
             'sections' => [

@@ -24,9 +24,11 @@ class Post extends Model
         'title',
         'slug',
         'content',
+        'excerpt',
         'status',
         'thumbnail',
         'published_at',
+        'version',
     ];
 
     /**
@@ -37,6 +39,7 @@ class Post extends Model
         return [
             'status' => PostStatus::class,
             'published_at' => 'datetime',
+            'version' => 'integer',
         ];
     }
 
@@ -45,7 +48,9 @@ class Post extends Model
         parent::boot();
 
         static::creating(function ($post) {
-            $post->slug = Str::random(8);
+            if (empty($post->slug)) {
+                $post->slug = Str::random(8);
+            }
         });
     }
 
@@ -71,6 +76,22 @@ class Post extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    /**
+     * @return HasMany<PostRevision, $this>
+     */
+    public function revisions(): HasMany
+    {
+        return $this->hasMany(PostRevision::class);
+    }
+
+    /**
+     * @return HasMany<PostSlugRedirect, $this>
+     */
+    public function slugRedirects(): HasMany
+    {
+        return $this->hasMany(PostSlugRedirect::class);
     }
 
     /**

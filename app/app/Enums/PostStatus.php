@@ -12,6 +12,8 @@ enum PostStatus: string implements HasColor, HasIcon, HasLabel
 
     case Published = 'published';
 
+    case Scheduled = 'scheduled';
+
     case Archived = 'archived';
 
     public function getLabel(): string
@@ -19,6 +21,7 @@ enum PostStatus: string implements HasColor, HasIcon, HasLabel
         return match ($this) {
             self::Draft => 'Draft',
             self::Published => 'Published',
+            self::Scheduled => 'Scheduled',
             self::Archived => 'Archived',
         };
     }
@@ -28,6 +31,7 @@ enum PostStatus: string implements HasColor, HasIcon, HasLabel
         return match ($this) {
             self::Draft => 'gray',
             self::Published => 'success',
+            self::Scheduled => 'info',
             self::Archived => 'danger',
         };
     }
@@ -37,6 +41,7 @@ enum PostStatus: string implements HasColor, HasIcon, HasLabel
         return match ($this) {
             self::Draft => 'heroicon-m-pencil',
             self::Published => 'heroicon-m-check-circle',
+            self::Scheduled => 'heroicon-m-clock',
             self::Archived => 'heroicon-m-archive-box',
         };
     }
