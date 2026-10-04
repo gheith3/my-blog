@@ -70,3 +70,25 @@ it('generates the meta description from the first paragraph when the excerpt is 
         ->assertOk()
         ->assertSee('<meta name="description" content="First paragraph of the story.">', false);
 });
+
+it('serves an absolute share image url with dimensions for social crawlers', function () {
+    Storage::fake('public');
+    // A 1x1 transparent PNG.
+    Storage::disk('public')->put('thumbnails/share.png', base64_decode(
+        'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='
+    ));
+
+    $post = Post::factory()->published()->create(['thumbnail' => 'thumbnails/share.png']);
+
+    $response = $this->get("/posts/{$post->slug}");
+
+    $expectedImage = request()->getSchemeAndHttpHost().'/storage/thumbnails/share.png';
+
+    $response
+        ->assertOk()
+        ->assertSee('<meta property="og:image" content="'.$expectedImage.'">', false)
+        ->assertSee('<meta property="og:image:type" content="image/png">', false)
+        ->assertSee('<meta property="og:image:width" content="1">', false)
+        ->assertSee('<meta property="og:image:height" content="1">', false)
+        ->assertSee('<meta name="twitter:image" content="'.$expectedImage.'">', false);
+});

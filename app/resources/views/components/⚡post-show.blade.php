@@ -59,7 +59,23 @@ new #[\Livewire\Attributes\Layout('layouts.app')] class extends Component {
         : app(\App\Services\PostService::class)->generateExcerpt($post->content);
     $ogType = 'article';
     $ogUrl = route('posts.show', $post->slug);
-    $ogImage = $post->thumbnail ? Storage::disk('public')->url($post->thumbnail) : null;
+
+    // Social crawlers (WhatsApp, X) need an absolute image URL on the same
+    // scheme and host as the shared page; APP_URL alone can drift (e.g. an
+    // http value in a prod env behind an https proxy).
+    $ogImage = null;
+    $ogImageWidth = null;
+    $ogImageHeight = null;
+    $ogImageType = null;
+    if ($post->thumbnail) {
+        $imageRelativePath = parse_url(Storage::disk('public')->url($post->thumbnail), PHP_URL_PATH);
+        $ogImage = request()->getSchemeAndHttpHost().$imageRelativePath;
+
+        $imagePath = Storage::disk('public')->path($post->thumbnail);
+        if (is_file($imagePath) && ($imageSize = @getimagesize($imagePath))) {
+            [$ogImageWidth, $ogImageHeight, $ogImageType] = [$imageSize[0], $imageSize[1], $imageSize['mime']];
+        }
+    }
 @endphp
 
 @section('headMeta')
@@ -103,6 +119,16 @@ new #[\Livewire\Attributes\Layout('layouts.app')] class extends Component {
     @if ($ogImage)
         <meta property="og:image" content="{{ $ogImage }}">
         <meta property="og:image:alt" content="{{ $post->title }}">
+        @if (request()->isSecure())
+            <meta property="og:image:secure_url" content="{{ $ogImage }}">
+        @endif
+        @if ($ogImageType)
+            <meta property="og:image:type" content="{{ $ogImageType }}">
+        @endif
+        @if ($ogImageWidth && $ogImageHeight)
+            <meta property="og:image:width" content="{{ $ogImageWidth }}">
+            <meta property="og:image:height" content="{{ $ogImageHeight }}">
+        @endif
     @endif
     @if ($post->published_at)
         <meta property="article:published_time" content="{{ $post->published_at->toIso8601String() }}">
@@ -225,7 +251,7 @@ new #[\Livewire\Attributes\Layout('layouts.app')] class extends Component {
             <footer class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
                 <div class="flex items-center justify-between">
                     <p class="text-sm text-gray-500">
-                        {{ $settings->get('posts_last_updated') }} {{ $post->updated_at->format('F j, Y') }}
+                        {{ $post->published_at?->format('F j, Y') ?? $post->created_at->format('F j, Y') }}
                     </p>
 
                     <div class="flex items-center gap-3">
