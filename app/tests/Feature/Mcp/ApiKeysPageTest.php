@@ -1,7 +1,9 @@
 <?php
 
+use App\Filament\Pages\ApiKeys;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 
@@ -33,4 +35,19 @@ it('renders the API Keys page with the MCP URL', function () {
         ->get('/dashboard/api-keys')
         ->assertOk()
         ->assertSee('/mcp/blog');
+});
+
+it('creates a key from the page, shows it once, and clears it on dismiss', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $page = Livewire::test(ApiKeys::class)
+        ->callAction('create', ['name' => 'Test agent', 'ability' => 'read'])
+        ->assertHasNoActionErrors();
+
+    expect($page->instance()->newTokenPlaintext)->not->toBeEmpty()
+        ->and($user->tokens()->where('name', 'Test agent')->exists())->toBeTrue();
+
+    $page->call('dismissNewToken')
+        ->assertSet('newTokenPlaintext', null);
 });

@@ -109,25 +109,18 @@ class ApiKeys extends Page implements HasTable
 
                     $token = auth()->user()->createToken($data['name'], $abilities);
 
+                    // The plaintext is shown inline on the page (see api-keys view).
+                    // Opening a second modal from here breaks the Livewire request
+                    // with "Property [$mountedActionSchema0] not found".
                     $this->newTokenPlaintext = $token->accessToken;
                     $this->newTokenName = $data['name'];
-
-                    $this->replaceMountedAction('reveal');
                 }),
-            // Visible only in the request that mints a token, so it does not
-            // show as a permanent header button. Gated on state rather than
-            // ->hidden(), since a hidden action makes replaceMountedAction() no-op.
-            Action::make('reveal')
-                ->label('')
-                ->visible(fn (): bool => filled($this->newTokenPlaintext))
-                ->modalHeading('Your new API key')
-                ->modalDescription('Copy it now. It will not be shown again.')
-                ->modalSubmitAction(false)
-                ->modalCancelActionLabel('Done')
-                ->modalContent(fn () => view('filament.pages.api-key-reveal', [
-                    'token' => $this->newTokenPlaintext,
-                    'name' => $this->newTokenName,
-                ])),
         ];
+    }
+
+    public function dismissNewToken(): void
+    {
+        $this->newTokenPlaintext = null;
+        $this->newTokenName = null;
     }
 }
