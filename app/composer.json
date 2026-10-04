@@ -13,6 +13,8 @@
         "joaopaulolndev/filament-edit-profile": "*",
         "kirschbaum-development/eloquent-power-joins": "*",
         "laravel/framework": "^13.0",
+        "laravel/mcp": "^0.9.4",
+        "laravel/passport": "^13.7",
         "laravel/tinker": "^3.0"
     },
     "require-dev": {

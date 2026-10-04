@@ -42,6 +42,14 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        // MCP server (routes/ai.php): authenticates both static personal
+        // access tokens (the API Keys page) and full OAuth 2.1 grants, since
+        // Passport's TokenGuard validates either kind of oauth_access_tokens row.
+        'api' => [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ],
     ],
 
     /*
