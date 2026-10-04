@@ -60,13 +60,18 @@ echo "🔗 Creating storage symlink..."
 php artisan storage:link --force 2>/dev/null || true
 
 # Passport's RSA keypair signs the MCP OAuth/API tokens (the auth:api guard).
-# passport:keys refuses to overwrite existing keys, so this is safe on every
-# boot: it creates them once, and they persist in the storage volume.
-# Without them every OAuth/API-token request fails, so stop the boot if this fails.
-echo "🔑 Ensuring Passport encryption keys exist..."
-if ! php artisan passport:keys; then
-    echo "❌ Passport keys could not be created. Aborting."
-    exit 1
+# Create them only when missing: passport:keys exits non-zero if they already
+# exist, so its exit code can't be used to detect failure on every boot. The
+# keys persist in the storage volume. Without them every OAuth/API-token
+# request fails, so stop the boot if creation fails.
+if [ -f storage/oauth-private.key ] && [ -f storage/oauth-public.key ]; then
+    echo "🔑 Passport encryption keys already exist."
+else
+    echo "🔑 Creating Passport encryption keys..."
+    if ! php artisan passport:keys; then
+        echo "❌ Passport keys could not be created. Aborting."
+        exit 1
+    fi
 fi
 # passport:keys sets 600/660 only at creation. The blanket "chmod -R 775"
 # above loosens them again on every boot, and league/oauth2-server refuses
