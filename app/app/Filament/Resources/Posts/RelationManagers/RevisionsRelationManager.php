@@ -2,15 +2,18 @@
 
 namespace App\Filament\Resources\Posts\RelationManagers;
 
+use App\Enums\RevisionState;
 use App\Models\PostRevision;
 use App\Services\PostService;
 use Filament\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 
 class RevisionsRelationManager extends RelationManager
@@ -71,6 +74,61 @@ class RevisionsRelationManager extends RelationManager
                     ->sortable(),
             ])
             ->recordActions([
+                Action::make('viewDetails')
+                    ->label(__('filament.resources.post.revisions.actions.view_details'))
+                    ->icon(Heroicon::OutlinedEye)
+                    ->color('gray')
+                    ->slideOver()
+                    ->modalWidth(Width::FiveExtraLarge)
+                    ->modalHeading(fn (PostRevision $record): string => __('filament.resources.post.revisions.details.heading', ['id' => $record->id]))
+                    ->modalSubmitAction(false)
+                    ->modalCancelActionLabel(__('filament.resources.post.revisions.details.close'))
+                    ->modalContent(fn (PostRevision $record): View => view('filament.posts.revision-details', [
+                        'revision' => $record,
+                        'post' => $this->getOwnerRecord(),
+                    ])),
+
+                Action::make('approve')
+                    ->label(__('filament.resources.post.revisions.actions.approve'))
+                    ->icon(Heroicon::OutlinedCheck)
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->modalDescription(__('filament.resources.post.revisions.actions.approve_confirm'))
+                    ->visible(fn (PostRevision $record): bool => $record->isPending())
+                    ->action(function (PostRevision $record): void {
+                        $record = app(PostService::class)->approveRevision($record, auth()->user());
+
+                        if ($record->state === RevisionState::Conflict) {
+                            Notification::make()
+                                ->warning()
+                                ->title(__('filament.resources.post.revisions.notifications.conflict'))
+                                ->send();
+
+                            return;
+                        }
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('filament.resources.post.revisions.notifications.approved', ['version' => $record->version]))
+                            ->send();
+                    }),
+
+                Action::make('reject')
+                    ->label(__('filament.resources.post.revisions.actions.reject'))
+                    ->icon(Heroicon::OutlinedXMark)
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->modalDescription(__('filament.resources.post.revisions.actions.reject_confirm'))
+                    ->visible(fn (PostRevision $record): bool => $record->isPending())
+                    ->action(function (PostRevision $record): void {
+                        app(PostService::class)->rejectRevision($record, auth()->user());
+
+                        Notification::make()
+                            ->success()
+                            ->title(__('filament.resources.post.revisions.notifications.rejected'))
+                            ->send();
+                    }),
+
                 Action::make('restore')
                     ->label(__('filament.resources.post.revisions.actions.restore'))
                     ->icon(Heroicon::OutlinedArrowUturnLeft)
